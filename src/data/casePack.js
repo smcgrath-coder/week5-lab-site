@@ -1,0 +1,92 @@
+export const FICTIONAL_NOTE =
+  "Everything in the case pack is fictional — patients, meetings, studies, authors, journals, and numbers were written for this course. None of the citations resolve to a real paper.";
+
+export const CASE_PACK = [
+  {
+    id: "c1",
+    lane: "clinical",
+    title: "C1 — Intake notes: Riverbend Family Medicine",
+    usedFor: "task2b",
+    text: [
+      "Patient: Maria Delgado, 58F. Visit date: June 3.",
+      "Reason for visit: Two-week follow-up after starting metformin for newly diagnosed type 2 diabetes. A1c was 7.8 at the prior visit.",
+      'Patient reports feeling "mostly fine." Had some loose stools the first week that have since settled. Says she "thinks she missed maybe two or three doses" when her schedule got busy. Checking her sugar "a few times a week"; morning readings "usually around 140 to 160." No blurry vision, no excess thirst. Walking about 20 minutes most days.',
+      "Current meds: metformin 500 mg twice daily; lisinopril 10 mg daily (started last year); occasional ibuprofen for knee pain.",
+      "Vitals today: BP 138/84, HR 76, weight 192 lb (down 3 lb from last visit).",
+      "Plan discussed: continue metformin; recheck A1c in 3 months; consider increasing the metformin dose if morning readings stay high. Reinforced diet; set a goal of checking sugars daily.",
+    ].join("\n"),
+  },
+  {
+    id: "c2",
+    lane: "clinical",
+    title: "C2 — Discharge instructions to convey: post wisdom-tooth extraction",
+    usedFor: "task2a",
+    text: [
+      "- Bite on gauze for 30–45 minutes; replace it if it soaks through; stop using it once the bleeding slows.",
+      '- No rinsing, spitting, drinking through a straw, or smoking for 24 hours, these can dislodge the clot and cause a painful "dry socket."',
+      "- Soft foods today. Avoid hot liquids while the mouth is still numb.",
+      "- Ice 20 minutes on, 20 minutes off, for the first day to limit swelling.",
+      "- Ibuprofen 400–600 mg every 6–8 hours for pain as needed; take it with food.",
+      "- Amoxicillin 500 mg three times daily for 7 days, finish the whole course even if feeling better.",
+      "- Call the clinic if: bleeding hasn't slowed after 2 hours of steady pressure, fever over 101°F, swelling getting worse after day 3, or severe pain that ibuprofen doesn't touch.",
+    ].join("\n"),
+  },
+  {
+    id: "c3",
+    lane: "clinical",
+    title: "C3 — Two study abstracts on AI sepsis prediction",
+    usedFor: "task2c",
+    text: [
+      'Abstract A. "Real-time machine-learning alert for early sepsis detection in the emergency department: a single-center prospective study." Hartmann R, Osei K, et al. Journal of Clinical Informatics, 2023.',
+      "A gradient-boosted sepsis prediction model was deployed in a 600-bed academic ED. Across 14,200 encounters the model reached an AUC of 0.89, with sensitivity 78% and specificity 84%. Median alert lead time before clinician recognition was 2.4 hours. Adoption was associated with a reduction in time-to-antibiotics. The authors conclude the tool is a promising adjunct for early sepsis identification.",
+      'Abstract B. "External validation of a commercial sepsis prediction model across three community hospitals." Braithwaite N, Cho L, et al. Critical Care Outcomes, 2024.',
+      "The same class of proprietary sepsis alert was evaluated retrospectively across three community sites (n = 21,500). AUC fell to 0.71, with sensitivity 63% at the vendor-recommended threshold. The model produced 8.4 alerts for every true positive case. Performance was lowest among patients with atypical or non-infectious SIRS. The authors caution that vendor-reported metrics may not transfer to settings that differ from the development population.",
+    ].join("\n"),
+  },
+  {
+    id: "o1",
+    lane: "operational",
+    title: "O1 — Transcript excerpt: Clinical Informatics Steering Committee, May 14",
+    usedFor: "task2b",
+    text: [
+      "Dana (chair): Okay, item three, the ambient scribe pilot. Where are we?",
+      "Priya: We've got 12 clinicians signed up across family med and IM. We were hoping for 15, but a couple dropped out over consent questions.",
+      "Marcus: Do we have a go-live date?",
+      "Priya: Tentatively the first week of August, but that depends on whether IT finishes the EHR integration. I don't want to commit until we hear back from them.",
+      "Dana: Fine, let's call it 'early August, pending IT.' Who's owning the clinician training?",
+      "Priya: That's still open, honestly. We need someone. I can do the first session but not all of them.",
+      "Marcus: I'll check if one of the super-users can take it. Don't put my name down as the owner yet, though.",
+      "Dana: Understood. Next, the budget, Priya, you mentioned needing another $40k?",
+      "Priya: Maybe around there. I'd have to confirm the licensing once we know the final headcount. Could be less.",
+      "Dana: Let's table the budget number until we have the headcount locked. Last thing, there was a proposal to extend the pilot to nursing documentation. I think that's premature. Let's hold it for now.",
+      "Marcus: Agreed, not yet.",
+      "Dana: Good. Priya sends a recap by Friday.",
+    ].join("\n"),
+  },
+  {
+    id: "o2",
+    lane: "operational",
+    title: "O2 — Policy brief to convey: county 'AI-in-Care Disclosure' rule",
+    usedFor: "task2a",
+    text: [
+      "- Starting January 1, clinics in the county must tell patients when an AI tool is used to help make decisions about their diagnosis or treatment.",
+      "- The disclosure can be spoken or written, but it has to happen before the AI-informed decision affects the patient's care.",
+      "- The rule applies to diagnostic AI and treatment-recommendation AI. It does NOT apply to back-office uses like scheduling or billing.",
+      "- Patients can ask for a human review of any AI-informed decision, and clinics must offer that at no extra cost.",
+      "- Clinics must keep a record that the disclosure was given, but patients do not have to sign anything.",
+      "- The rule does not ban any AI tool. It only requires telling patients that one was used.",
+    ].join("\n"),
+  },
+  {
+    id: "o3",
+    lane: "operational",
+    title: "O3 — Two program reports on ambient AI scribes",
+    usedFor: "task2c",
+    text: [
+      'Report A. "Ambient documentation assistant reduces after-hours charting: a 6-month quality-improvement report." Okafor T, Liang M. Health System Innovation Brief, 2024.',
+      'Across 40 primary care clinicians at one health system, after-hours "pajama time" in the EHR fell by an average of 28 minutes per day after adopting an ambient AI scribe. Self-reported documentation burden improved on a 5-point survey. The authors recommend a broader rollout.',
+      'Report B. "A randomized evaluation of an ambient AI scribe on documentation time and note quality." Velasquez J, Reuben S, et al. Journal of Care Delivery Research, 2025.',
+      "In a randomized trial across 110 clinicians, the intervention group saw no statistically significant reduction in total documentation time versus control. Note length increased, and chart reviewers flagged a higher rate of extraneous or unverified content in AI-assisted notes. Clinician satisfaction improved modestly. The authors note that time savings reported in uncontrolled studies may reflect selection and novelty effects.",
+    ].join("\n"),
+  },
+];
