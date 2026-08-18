@@ -526,3 +526,54 @@
   color: var(--text);
   margin-bottom: 24px;
 }
+
+/* ---- Finish ---- */
+
+.checklist {
+  margin: 0 0 24px;
+  padding-left: 20px;
+}
+
+.checklist li {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.finish-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.finish-actions button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.finish-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.email-success {
+  color: #1a7f37;
+  background: rgba(26, 127, 55, 0.08);
+  border: 1px solid rgba(26, 127, 55, 0.3);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .email-success {
+    color: #4ade80;
+    background: rgba(74, 222, 128, 0.1);
+    border-color: rgba(74, 222, 128, 0.35);
+  }
+}
