@@ -49,7 +49,7 @@ export default async function handler(req, res) {
         // Resend's onboarding domain — see docs/DEPLOY.md ("verify sender").
         from: "MHI 289A Week 5 Lab <onboarding@resend.dev>",
         to: env.INSTRUCTOR_EMAIL,
-        subject: `MHI 289A Week 5 submission — ${studentName}`,
+        subject: `MHI 289A Week 5 submission: ${studentName}`,
         text: `Submitted ${timestamp}.\n\nStudent: ${studentName}`,
         attachments: [
           {
@@ -61,12 +61,12 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      res.status(502).json({ error: "Email failed to send — download the PDF and submit it on Canvas instead." });
+      res.status(502).json({ error: "Email failed to send. Download the PDF and submit it on Canvas instead." });
       return;
     }
 
     res.status(200).json({ ok: true });
   } catch {
-    res.status(502).json({ error: "Email failed to send — download the PDF and submit it on Canvas instead." });
+    res.status(502).json({ error: "Email failed to send. Download the PDF and submit it on Canvas instead." });
   }
 }

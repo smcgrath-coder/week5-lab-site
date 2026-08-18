@@ -94,7 +94,7 @@ describe("validateChatRequest — turn cap", () => {
     const result = validateChatRequest({ passcode: "class-secret", model: validModel, messages }, env);
     expect(result.ok).toBe(false);
     expect(result.status).toBe(429);
-    expect(result.error).toBe("This conversation is long — start a new one");
+    expect(result.error).toBe("This conversation is long. Start a new one");
   });
 
   it("accepts a conversation exactly at the max turns", () => {

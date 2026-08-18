@@ -30,7 +30,7 @@ async function sendLowBalanceAlert(remaining, threshold, env) {
 async function handleInstructorMode(req, res, env) {
   const body = req.body ?? {};
   if (body.passcode !== env.CLASS_PASSCODE) {
-    res.status(401).json({ error: "That passcode isn't right — check with your instructor." });
+    res.status(401).json({ error: "That passcode isn't right. Check with your instructor." });
     return;
   }
   try {

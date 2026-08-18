@@ -2,7 +2,7 @@ import { MAX_PDF_BYTES } from "./limits.js";
 
 export function validateEmailRequest(body, env) {
   if (body?.passcode !== env.CLASS_PASSCODE) {
-    return { ok: false, status: 401, error: "That passcode isn't right — check with your instructor." };
+    return { ok: false, status: 401, error: "That passcode isn't right. Check with your instructor." };
   }
 
   if (typeof body?.pdfBase64 !== "string" || body.pdfBase64.length === 0) {

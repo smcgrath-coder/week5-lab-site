@@ -3,7 +3,7 @@ import { MODEL_IDS } from "../../src/data/models.js";
 
 export function validateChatRequest(body, env) {
   if (body?.passcode !== env.CLASS_PASSCODE) {
-    return { ok: false, status: 401, error: "That passcode isn't right — check with your instructor." };
+    return { ok: false, status: 401, error: "That passcode isn't right. Check with your instructor." };
   }
 
   if (!MODEL_IDS.includes(body?.model)) {
@@ -26,7 +26,7 @@ export function validateChatRequest(body, env) {
   }
 
   if (messages.length > MAX_TURNS_PER_CONVERSATION) {
-    return { ok: false, status: 429, error: "This conversation is long — start a new one" };
+    return { ok: false, status: 429, error: "This conversation is long. Start a new one" };
   }
 
   for (const message of messages) {

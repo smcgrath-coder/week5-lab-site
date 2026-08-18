@@ -27,7 +27,7 @@ export default async function handler(request) {
 
   if (body?.ping === true) {
     if (body?.passcode !== env.CLASS_PASSCODE) {
-      return json({ error: "That passcode isn't right — check with your instructor." }, 401);
+      return json({ error: "That passcode isn't right. Check with your instructor." }, 401);
     }
     return json({ ok: true }, 200);
   }
@@ -66,14 +66,14 @@ export default async function handler(request) {
     });
   } catch {
     return json(
-      { error: "The AI service is unavailable or out of credits — contact your instructor." },
+      { error: "The AI service is unavailable or out of credits. Contact your instructor." },
       502
     );
   }
 
   if (!upstream.ok) {
     return json(
-      { error: "The AI service is unavailable or out of credits — contact your instructor." },
+      { error: "The AI service is unavailable or out of credits. Contact your instructor." },
       502
     );
   }
