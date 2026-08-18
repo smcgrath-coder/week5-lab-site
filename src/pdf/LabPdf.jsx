@@ -1,5 +1,6 @@
 import { Document, Page, pdf, StyleSheet, Text, View } from "@react-pdf/renderer";
 import { buildPdfData } from "./buildPdfData";
+import { MarkdownPdfText } from "./MarkdownPdfText";
 
 const styles = StyleSheet.create({
   page: {
@@ -48,7 +49,6 @@ const styles = StyleSheet.create({
   turnStudent: { backgroundColor: "#f4f3ec", borderRadius: 4, padding: 8, marginBottom: 6 },
   turnModel: { backgroundColor: "#f1e9fb", borderRadius: 4, padding: 8, marginBottom: 6 },
   turnSpeaker: { fontSize: 8, fontWeight: 700, textTransform: "uppercase", color: "#666666", marginBottom: 3 },
-  turnText: { fontSize: 10, lineHeight: 1.4 },
   reflectionPrompt: { fontSize: 10.5, fontWeight: 700, marginTop: 10, marginBottom: 3 },
   reflectionAnswer: { fontSize: 10, lineHeight: 1.4, marginBottom: 8 },
 });
@@ -74,9 +74,9 @@ function ConversationBlock({ block }) {
       <Text style={styles.conversationLabel}>{block.label}</Text>
       {block.turns.length === 0 && <Text style={styles.emptyConversation}>(no messages)</Text>}
       {block.turns.map((turn, i) => (
-        <View key={i} style={turn.speaker === "Student" ? styles.turnStudent : styles.turnModel} wrap={false}>
+        <View key={i} style={turn.speaker === "Student" ? styles.turnStudent : styles.turnModel}>
           <Text style={styles.turnSpeaker}>{turn.speaker}</Text>
-          <Text style={styles.turnText}>{turn.text}</Text>
+          <MarkdownPdfText text={turn.text} />
         </View>
       ))}
     </View>
