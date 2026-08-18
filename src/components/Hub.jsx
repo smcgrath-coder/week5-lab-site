@@ -9,7 +9,7 @@ const STOPS = [
   { id: "wrapUp", title: "Wrap-Up" },
 ];
 
-export default function Hub({ labState, onNavigate }) {
+export default function Hub({ labState, onNavigate, onStartOver }) {
   const completeness = getCompleteness(labState.state);
   const firstIncomplete = STOPS.find((s) => !completeness[s.id].done)?.id ?? STOPS[0].id;
 
@@ -73,6 +73,22 @@ export default function Hub({ labState, onNavigate }) {
           <input type="file" accept="application/json" onChange={handleRestoreBackup} />
         </label>
       </div>
+
+      <button
+        type="button"
+        className="start-over-button"
+        onClick={() => {
+          if (
+            window.confirm(
+              "Start over? This clears all saved work on this browser. Use this before handing off a shared computer to another student."
+            )
+          ) {
+            onStartOver();
+          }
+        }}
+      >
+        Start over (clear this browser)
+      </button>
     </div>
   );
 }

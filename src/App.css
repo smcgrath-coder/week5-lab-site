@@ -341,6 +341,21 @@
   display: none;
 }
 
+.start-over-button {
+  display: block;
+  margin-top: 16px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 12px;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.start-over-button:hover {
+  color: #b42318;
+}
+
 /* ---- Lab screens (shared) ---- */
 
 .back-link {

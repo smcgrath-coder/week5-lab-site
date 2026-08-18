@@ -10,6 +10,7 @@ import Lab4 from "./components/Lab4.jsx";
 import Landing from "./components/Landing.jsx";
 import Layout from "./components/Layout.jsx";
 import WrapUp from "./components/WrapUp.jsx";
+import { createInitialState } from "./state/labState.js";
 import { PasscodeContext, loadPasscode, savePasscode } from "./state/passcode.js";
 import { useLabState } from "./state/useLabState.js";
 
@@ -47,6 +48,13 @@ function App() {
     setRoute("hub");
   }
 
+  function handleStartOver() {
+    labState.restoreState(createInitialState());
+    savePasscode("");
+    setPasscode("");
+    setRoute("landing");
+  }
+
   const LabScreen = LAB_SCREENS[route];
 
   return (
@@ -55,7 +63,9 @@ function App() {
         {route === "landing" && (
           <Landing initialStudent={labState.state.student} onSuccess={handleLandingSuccess} />
         )}
-        {route === "hub" && <Hub labState={labState} onNavigate={setRoute} />}
+        {route === "hub" && (
+          <Hub labState={labState} onNavigate={setRoute} onStartOver={handleStartOver} />
+        )}
         {LabScreen && <LabScreen labState={labState} onNavigate={setRoute} />}
         {route === "finish" && <Finish labState={labState} onNavigate={setRoute} />}
         {route === "instructor" && <Instructor />}
