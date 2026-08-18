@@ -66,7 +66,12 @@ export default function Landing({ initialStudent, onSuccess }) {
 
       <label className="field">
         <span>Your name</span>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Full name" />
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="First and last name"
+        />
       </label>
 
       <div className="lane-picker">

@@ -3,7 +3,7 @@ export const LABS = {
     title: "Working With AI — Prompting, Breaking, and Grounding",
     courseLine: "MHI 289A • UC Davis School of Medicine • Summer 2026",
     howToUse: [
-      "This lab record works like the old notebook, minus the code. Chat with each model directly in the panels below, then fill in the reflection fields as you go — don't wait until the end and try to reconstruct what happened from memory.",
+      "Chat with each model directly in the panels below, then fill in the reflection fields as you go — don't wait until the end and try to reconstruct what happened from memory.",
       "You're graded on honesty and depth, not on getting clean, impressive-looking results. A record that documents a failure you almost missed is worth more than one that claims everything worked the first time. The failures are the assignment.",
     ],
     lanesNote:
