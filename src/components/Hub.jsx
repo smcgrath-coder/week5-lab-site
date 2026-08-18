@@ -9,7 +9,7 @@ const STOPS = [
   { id: "wrapUp", title: "Wrap-Up" },
 ];
 
-export default function Hub({ labState, onNavigate, onStartOver }) {
+export default function Hub({ labState, onNavigate, onStartOver, isFirstVisit = false }) {
   const completeness = getCompleteness(labState.state);
   const firstIncomplete = STOPS.find((s) => !completeness[s.id].done)?.id ?? STOPS[0].id;
 
@@ -38,7 +38,9 @@ export default function Hub({ labState, onNavigate, onStartOver }) {
   return (
     <div className="hub">
       <p className="autosave-indicator">Autosaving to this browser as you go.</p>
-      <h1>Welcome back, {labState.state.student.name || "there"}</h1>
+      <h1>
+        {isFirstVisit ? "Welcome" : "Welcome back"}, {labState.state.student.name || "there"}
+      </h1>
 
       <button type="button" className="continue-button" onClick={() => onNavigate(firstIncomplete)}>
         Continue

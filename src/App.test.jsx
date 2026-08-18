@@ -53,6 +53,25 @@ describe('App — resume path', () => {
   })
 })
 
+describe('App — first-visit vs resumed greeting', () => {
+  it('says "Welcome," not "Welcome back," right after completing landing this session', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => ({ ok: true }) }))
+    const user = userEvent.setup()
+    render(<App />)
+
+    await user.type(screen.getByLabelText(/your name/i), 'Jordan Lee')
+    await user.click(screen.getByRole('button', { name: /clinical/i }))
+    await user.click(screen.getByRole('checkbox', { name: /will not enter real patient information/i }))
+    await user.type(screen.getByLabelText(/class passcode/i), 'class-secret')
+    await user.click(screen.getByRole('button', { name: /^begin$/i }))
+
+    expect(await screen.findByText(/^welcome, jordan lee/i)).toBeInTheDocument()
+    expect(screen.queryByText(/welcome back/i)).not.toBeInTheDocument()
+
+    vi.unstubAllGlobals()
+  })
+})
+
 describe('App — start over (shared computer)', () => {
   it('clears the previous student\'s work and returns to a fresh landing page when confirmed', async () => {
     let saved = setStudent(createInitialState(), {

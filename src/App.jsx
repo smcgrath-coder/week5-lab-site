@@ -40,11 +40,13 @@ function App() {
   const labState = useLabState();
   const [route, setRoute] = useState(() => computeInitialRoute(labState.state));
   const [passcode, setPasscode] = useState(() => loadPasscode());
+  const [justCompletedLanding, setJustCompletedLanding] = useState(false);
 
   function handleLandingSuccess({ name, lane, acknowledgedPHI, passcode: enteredPasscode }) {
     labState.setStudent({ name, lane, acknowledgedPHI });
     savePasscode(enteredPasscode);
     setPasscode(enteredPasscode);
+    setJustCompletedLanding(true);
     setRoute("hub");
   }
 
@@ -52,6 +54,7 @@ function App() {
     labState.restoreState(createInitialState());
     savePasscode("");
     setPasscode("");
+    setJustCompletedLanding(false);
     setRoute("landing");
   }
 
@@ -64,7 +67,12 @@ function App() {
           <Landing initialStudent={labState.state.student} onSuccess={handleLandingSuccess} />
         )}
         {route === "hub" && (
-          <Hub labState={labState} onNavigate={setRoute} onStartOver={handleStartOver} />
+          <Hub
+            labState={labState}
+            onNavigate={setRoute}
+            onStartOver={handleStartOver}
+            isFirstVisit={justCompletedLanding}
+          />
         )}
         {LabScreen && <LabScreen labState={labState} onNavigate={setRoute} />}
         {route === "finish" && <Finish labState={labState} onNavigate={setRoute} />}
