@@ -7,6 +7,7 @@ import {
   deserialize,
   exportBackup,
   importBackup,
+  removeLab3Attempt,
   serialize,
   setConversationMessages,
   setConversationState,
@@ -123,6 +124,22 @@ describe("updateLab3Attempt", () => {
     expect(next.labs.lab3.attempts[0].category).toBeNull();
     expect(next.labs.lab3.attempts[1].category).toBe("biased");
     expect(state.labs.lab3.attempts[1].category).toBeNull();
+  });
+});
+
+describe("removeLab3Attempt", () => {
+  it("removes the attempt at the given index without mutating the original state", () => {
+    let state = createInitialState();
+    state = addLab3Attempt(state);
+    state = updateLab3Attempt(state, 0, { category: "biased" });
+    state = addLab3Attempt(state);
+    state = updateLab3Attempt(state, 1, { category: "fabricatedCitation" });
+
+    const next = removeLab3Attempt(state, 0);
+
+    expect(next.labs.lab3.attempts).toHaveLength(1);
+    expect(next.labs.lab3.attempts[0].category).toBe("fabricatedCitation");
+    expect(state.labs.lab3.attempts).toHaveLength(2);
   });
 });
 

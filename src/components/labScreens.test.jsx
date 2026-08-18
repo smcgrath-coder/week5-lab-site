@@ -122,6 +122,44 @@ describe("Lab1 — New Conversation escape hatch", () => {
   });
 });
 
+describe("Lab3 — remove attempt", () => {
+  it("removes an attempt (and only that one) when the student confirms", async () => {
+    let state = createInitialState();
+    state = addLab3Attempt(state);
+    state = updateLab3Attempt(state, 0, { category: "biased", tried: "first attempt notes" });
+    state = addLab3Attempt(state);
+    state = updateLab3Attempt(state, 1, { category: "fabricatedCitation", tried: "second attempt notes" });
+    localStorage.setItem(STATE_KEY, serialize(state));
+
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+    const user = userEvent.setup();
+    render(<Harness Screen={Lab3} />);
+
+    expect(screen.getAllByText(/^Attempt \d$/)).toHaveLength(2);
+
+    const removeButtons = screen.getAllByRole("button", { name: /remove this attempt/i });
+    await user.click(removeButtons[0]); // remove attempt 1
+
+    expect(screen.getAllByText(/^Attempt \d$/)).toHaveLength(1);
+    expect(screen.getByText("second attempt notes")).toBeInTheDocument();
+    expect(screen.queryByText("first attempt notes")).not.toBeInTheDocument();
+  });
+
+  it("does not remove the attempt when the student cancels the confirm dialog", async () => {
+    let state = createInitialState();
+    state = addLab3Attempt(state);
+    localStorage.setItem(STATE_KEY, serialize(state));
+
+    vi.spyOn(window, "confirm").mockReturnValue(false);
+    const user = userEvent.setup();
+    render(<Harness Screen={Lab3} />);
+
+    await user.click(screen.getByRole("button", { name: /remove this attempt/i }));
+
+    expect(screen.getAllByText(/^Attempt \d$/)).toHaveLength(1);
+  });
+});
+
 describe("Lab4 — grounded run case-insert buttons", () => {
   it("adds one more set of case-insert buttons for the grounded run, not the ungrounded run", () => {
     render(<Harness Screen={Lab4} />);

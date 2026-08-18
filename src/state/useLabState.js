@@ -6,6 +6,7 @@ import {
   createInitialState,
   deserialize,
   exportBackup as exportBackupState,
+  removeLab3Attempt,
   serialize,
   setConversationMessages,
   setConversationState,
@@ -48,6 +49,7 @@ export function useLabState() {
       (index, patch) => dispatch((s) => updateLab3Attempt(s, index, patch)),
       []
     ),
+    removeLab3Attempt: useCallback((index) => dispatch((s) => removeLab3Attempt(s, index)), []),
     startConversation: useCallback(
       (path, model) => dispatch((s) => startConversation(s, path, model)),
       []

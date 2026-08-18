@@ -35,7 +35,20 @@ export default function Lab3({ labState, onNavigate }) {
 
       {lab3.attempts.map((attempt, index) => (
         <div key={index} className="lab3-attempt">
-          <h2>Attempt {index + 1}</h2>
+          <div className="lab3-attempt-header">
+            <h2>Attempt {index + 1}</h2>
+            <button
+              type="button"
+              className="remove-attempt-button"
+              onClick={() => {
+                if (window.confirm(`Remove attempt ${index + 1}? This deletes its transcript and notes.`)) {
+                  labState.removeLab3Attempt(index);
+                }
+              }}
+            >
+              Remove this attempt
+            </button>
+          </div>
 
           <div className="category-picker">
             {LABS.lab3.failureCategories.map((cat) => (

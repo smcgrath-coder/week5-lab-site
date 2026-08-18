@@ -79,6 +79,11 @@ export function updateLab3Attempt(state, index, patch) {
   return updateLab(state, "lab3", { attempts });
 }
 
+export function removeLab3Attempt(state, index) {
+  const attempts = state.labs.lab3.attempts.filter((_, i) => i !== index);
+  return updateLab(state, "lab3", { attempts });
+}
+
 function getIn(obj, path) {
   return path.reduce((acc, key) => (acc == null ? acc : acc[key]), obj);
 }
