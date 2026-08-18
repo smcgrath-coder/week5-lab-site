@@ -17,19 +17,6 @@ export default async function handler(request) {
   }
 
   const env = process.env;
-  const k = env.OPENROUTER_API_KEY || "";
-  console.error(
-    "DIAG key checks: len=",
-    k.length,
-    "trimmedLen=",
-    k.trim().length,
-    "startsWithQuote=",
-    k.startsWith('"'),
-    "endsWithQuote=",
-    k.endsWith('"'),
-    "hasNewline=",
-    /[\r\n]/.test(k)
-  );
 
   let body;
   try {
@@ -85,8 +72,6 @@ export default async function handler(request) {
   }
 
   if (!upstream.ok) {
-    const bodyText = await upstream.text().catch(() => "");
-    console.error("OpenRouter upstream error", upstream.status, bodyText);
     return json(
       { error: "The AI service is unavailable or out of credits. Contact your instructor." },
       502
