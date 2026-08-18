@@ -15,6 +15,12 @@ export default function Lab3({ labState, onNavigate }) {
     const path = ["lab3", "attempts", index, "chat"];
     return {
       onUpdate: ({ model, messages }) => labState.setConversationState(path, { model, messages }),
+      allowNewConversation: true,
+      onNewConversation: () => {
+        if (window.confirm("Start a new conversation? This clears the current transcript for this attempt.")) {
+          labState.clearConversation(path);
+        }
+      },
     };
   }
 

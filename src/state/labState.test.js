@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   addLab3Attempt,
   appendMessage,
+  clearConversation,
   createInitialState,
   deserialize,
   exportBackup,
@@ -231,6 +232,35 @@ describe("setConversationState", () => {
     const next = setConversationState(state, ["lab1", "runA"], { model: "gpt-mini", messages: [] });
 
     expect(next.labs.lab1.runA.model).toBe("gpt-mini");
+  });
+});
+
+describe("clearConversation", () => {
+  it("resets an existing conversation back to null immutably", () => {
+    let state = createInitialState();
+    state = startConversation(state, ["lab1", "runA"], "claude-haiku");
+    state = appendMessage(state, ["lab1", "runA"], { role: "user", content: "hi" });
+
+    const next = clearConversation(state, ["lab1", "runA"]);
+
+    expect(next.labs.lab1.runA).toBeNull();
+    expect(state.labs.lab1.runA.messages).toHaveLength(1);
+  });
+
+  it("works on an array-indexed path (a lab3 attempt's chat)", () => {
+    let state = createInitialState();
+    state = addLab3Attempt(state);
+    state = startConversation(state, ["lab3", "attempts", 0, "chat"], "claude-haiku");
+
+    const next = clearConversation(state, ["lab3", "attempts", 0, "chat"]);
+
+    expect(next.labs.lab3.attempts[0].chat).toBeNull();
+  });
+
+  it("is a no-op shape-wise when the conversation is already null", () => {
+    const state = createInitialState();
+    const next = clearConversation(state, ["lab1", "runA"]);
+    expect(next.labs.lab1.runA).toBeNull();
   });
 });
 

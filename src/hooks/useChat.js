@@ -61,9 +61,13 @@ export function useChat({ conversation, onUpdate, passcode }) {
 
         if (!response.ok) {
           const data = await response.json().catch(() => ({}));
+          // No streaming ever started, so nothing real is lost by rolling back —
+          // this keeps a failed send from permanently locking the model picker
+          // or polluting the transcript/PDF with an unanswered message.
+          onUpdate(historyBefore);
           setError(data.error || "The AI service is unavailable — try again in a moment.");
           setIsStreaming(false);
-          return;
+          return { ok: false };
         }
 
         let assistantContent = "";
@@ -76,13 +80,17 @@ export function useChat({ conversation, onUpdate, passcode }) {
         });
 
         setIsStreaming(false);
+        return { ok: true };
       } catch (err) {
         if (err?.name === "AbortError") {
           setIsStreaming(false);
-          return;
+          return { ok: false };
         }
+        // A mid-stream drop may have already delivered real partial output, so
+        // (unlike the pre-stream HTTP-error case above) we do NOT roll back here.
         setError("Lost connection to the AI service. Check your connection and try again.");
         setIsStreaming(false);
+        return { ok: false };
       }
     },
     [conversation, onUpdate, passcode]

@@ -13,6 +13,12 @@ export default function Lab1({ labState, onNavigate }) {
     const path = ["lab1", slot];
     return {
       onUpdate: ({ model, messages }) => labState.setConversationState(path, { model, messages }),
+      allowNewConversation: true,
+      onNewConversation: () => {
+        if (window.confirm("Start a new conversation? This clears the current transcript for this panel.")) {
+          labState.clearConversation(path);
+        }
+      },
     };
   }
 

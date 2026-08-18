@@ -43,9 +43,12 @@ describe("useChat — sending and streaming", () => {
       useChat({ conversation: baseConversation(), onUpdate, passcode: "class-secret" })
     );
 
+    let sendResult;
     await act(async () => {
-      await result.current.send("Explain metformin");
+      sendResult = await result.current.send("Explain metformin");
     });
+
+    expect(sendResult).toEqual({ ok: true });
 
     // first call: user message appended
     const firstCallMessages = onUpdate.mock.calls[0][0];
@@ -90,7 +93,7 @@ describe("useChat — sending and streaming", () => {
 });
 
 describe("useChat — HTTP error", () => {
-  it("surfaces the server's error message and does not fabricate an assistant reply", async () => {
+  it("surfaces the server's error message and rolls back the optimistic user message", async () => {
     const onUpdate = vi.fn();
     vi.stubGlobal(
       "fetch",
@@ -115,11 +118,59 @@ describe("useChat — HTTP error", () => {
       "Daily message limit reached. If you hit this doing the assignment, contact your instructor."
     );
     expect(result.current.isStreaming).toBe(false);
-    // user message was still appended...
-    expect(onUpdate).toHaveBeenCalledTimes(1);
+
+    // first call optimistically appends the user message...
+    expect(onUpdate).toHaveBeenCalledTimes(2);
     expect(onUpdate.mock.calls[0][0]).toHaveLength(1);
-    // ...but no assistant message was fabricated
     expect(onUpdate.mock.calls[0][0][0].role).toBe("user");
+    // ...but the second call rolls it back to the original (empty) history,
+    // so the failed send doesn't pollute the transcript/PDF or lock the model.
+    expect(onUpdate.mock.calls[1][0]).toEqual(baseConversation().messages);
+  });
+
+  it("resolves to {ok: false} so the caller can restore the student's draft text", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ ok: false, status: 502, json: async () => ({ error: "boom" }) })
+    );
+
+    const { result } = renderHook(() =>
+      useChat({ conversation: baseConversation(), onUpdate: () => {}, passcode: "class-secret" })
+    );
+
+    let sendResult;
+    await act(async () => {
+      sendResult = await result.current.send("hi");
+    });
+
+    expect(sendResult).toEqual({ ok: false });
+  });
+});
+
+describe("useChat — mid-stream failure", () => {
+  it("does NOT roll back the user message when the connection drops after streaming has started", async () => {
+    const onUpdate = vi.fn();
+    const body = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode(sseChunk("Partial")));
+        controller.error(new Error("network drop"));
+      },
+    });
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, status: 200, body }));
+
+    const { result } = renderHook(() =>
+      useChat({ conversation: baseConversation(), onUpdate, passcode: "class-secret" })
+    );
+
+    await act(async () => {
+      await result.current.send("hi");
+    });
+
+    expect(result.current.error).toMatch(/lost connection/i);
+    // the user message (and any partial assistant content already streamed) survives —
+    // only pre-stream HTTP errors roll back, since real output may exist here.
+    const lastCallMessages = onUpdate.mock.calls.at(-1)[0];
+    expect(lastCallMessages.some((m) => m.role === "user")).toBe(true);
   });
 });
 

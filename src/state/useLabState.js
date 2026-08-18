@@ -2,6 +2,7 @@ import { useCallback, useEffect, useReducer, useRef } from "react";
 import {
   addLab3Attempt,
   appendMessage,
+  clearConversation,
   createInitialState,
   deserialize,
   exportBackup as exportBackupState,
@@ -60,6 +61,7 @@ export function useLabState() {
       (path, conversationPatch) => dispatch((s) => setConversationState(s, path, conversationPatch)),
       []
     ),
+    clearConversation: useCallback((path) => dispatch((s) => clearConversation(s, path)), []),
     restoreState: useCallback((nextState) => dispatch(() => nextState), []),
     exportBackup: useCallback(() => exportBackupState(state), [state]),
   };

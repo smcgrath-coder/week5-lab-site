@@ -19,6 +19,7 @@ export default function ChatPanel({
 
   const effectiveConversation = conversation ?? { model: pendingModel, messages: [] };
   const hasMessages = effectiveConversation.messages.length > 0;
+  const hasAssistantReply = effectiveConversation.messages.some((m) => m.role === "assistant");
 
   function wrappedOnUpdate(messages) {
     onUpdate({ model: effectiveConversation.model, messages });
@@ -49,7 +50,10 @@ export default function ChatPanel({
     const text = draft.trim();
     if (!text || isStreaming) return;
     setDraft("");
-    await send(text);
+    const result = await send(text);
+    if (result && result.ok === false) {
+      setDraft(text);
+    }
   }
 
   function handleKeyDown(e) {
@@ -65,7 +69,7 @@ export default function ChatPanel({
 
       <label className="field chat-model-field">
         <span>Model</span>
-        <select value={effectiveConversation.model} onChange={handleModelChange} disabled={hasMessages}>
+        <select value={effectiveConversation.model} onChange={handleModelChange} disabled={hasAssistantReply}>
           {MODELS.map((m) => (
             <option key={m.id} value={m.openrouterId}>
               {m.label}

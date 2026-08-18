@@ -110,6 +110,10 @@ export function setConversationMessages(state, path, messages) {
   return setIn(state, ["labs", ...path, "messages"], messages);
 }
 
+export function clearConversation(state, path) {
+  return setIn(state, ["labs", ...path], null);
+}
+
 export function setConversationState(state, path, { model, messages }) {
   const existing = getIn(state, ["labs", ...path]);
   const conversation = {

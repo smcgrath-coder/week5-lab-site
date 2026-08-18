@@ -86,11 +86,14 @@ describe("ChatPanel — send and stream", () => {
 });
 
 describe("ChatPanel — model picker locking", () => {
-  it("locks the model picker once the conversation has messages", () => {
-    const withMessages = startedConversation({
-      messages: [{ role: "user", content: "hi", at: "2026-01-01T00:00:01.000Z" }],
+  it("locks the model picker once the conversation has an assistant reply", () => {
+    const withReply = startedConversation({
+      messages: [
+        { role: "user", content: "hi", at: "2026-01-01T00:00:01.000Z" },
+        { role: "assistant", content: "hello", at: "2026-01-01T00:00:02.000Z" },
+      ],
     });
-    render(<ChatPanel conversation={withMessages} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
+    render(<ChatPanel conversation={withReply} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
 
     expect(screen.getByLabelText(/model/i)).toBeDisabled();
   });
@@ -99,6 +102,36 @@ describe("ChatPanel — model picker locking", () => {
     render(<ChatPanel conversation={startedConversation()} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
 
     expect(screen.getByLabelText(/model/i)).toBeEnabled();
+  });
+
+  it("leaves the model picker enabled when a user message exists but no reply has come back yet (e.g. a failed first send)", () => {
+    const noReplyYet = startedConversation({
+      messages: [{ role: "user", content: "hi", at: "2026-01-01T00:00:01.000Z" }],
+    });
+    render(<ChatPanel conversation={noReplyYet} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
+
+    expect(screen.getByLabelText(/model/i)).toBeEnabled();
+  });
+});
+
+describe("ChatPanel — failed send restores the draft", () => {
+  it("puts the typed message back in the textarea when the send fails", async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ ok: false, status: 429, json: async () => ({ error: "Daily limit reached." }) })
+    );
+
+    render(
+      <ChatPanel conversation={startedConversation()} onUpdate={() => {}} caseButtons={[]} label="Test panel" />
+    );
+
+    const textarea = screen.getByRole("textbox", { name: /message/i });
+    await user.type(textarea, "Explain metformin");
+    await user.click(screen.getByRole("button", { name: /^send$/i }));
+
+    expect(await screen.findByText(/daily limit reached/i)).toBeInTheDocument();
+    expect(textarea.value).toBe("Explain metformin");
   });
 });
 

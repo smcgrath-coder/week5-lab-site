@@ -1,14 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Lab1 from "./Lab1";
 import Lab2 from "./Lab2";
 import Lab3 from "./Lab3";
+import Lab4 from "./Lab4";
 import { LABS } from "../data/labs";
 import {
   addLab3Attempt,
+  appendMessage,
   createInitialState,
   serialize,
+  startConversation,
   updateLab3Attempt,
 } from "../state/labState";
 import { useLabState } from "../state/useLabState";
@@ -17,6 +20,10 @@ const STATE_KEY = "mhi289a-week5-v1";
 
 beforeEach(() => {
   localStorage.clear();
+});
+
+afterEach(() => {
+  vi.restoreAllMocks();
 });
 
 function Harness({ Screen }) {
@@ -74,5 +81,55 @@ describe("Lab2 — case buttons filter by lane", () => {
     await user.click(screen.getByRole("button", { name: "operational" }));
     expect(screen.getByRole("button", { name: /insert o2/i })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /insert c2/i })).not.toBeInTheDocument();
+  });
+});
+
+describe("Lab1 — New Conversation escape hatch", () => {
+  it("clears Version A's transcript when the student confirms starting over", async () => {
+    let state = createInitialState();
+    state = startConversation(state, ["lab1", "runA"], "anthropic/claude-haiku-4.5");
+    state = appendMessage(state, ["lab1", "runA"], { role: "user", content: "a long stuck conversation" });
+    state = appendMessage(state, ["lab1", "runA"], { role: "assistant", content: "a reply" });
+    localStorage.setItem(STATE_KEY, serialize(state));
+
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+    const user = userEvent.setup();
+    render(<Harness Screen={Lab1} />);
+
+    expect(screen.getByText("a long stuck conversation")).toBeInTheDocument();
+
+    const newConvoButtons = screen.getAllByRole("button", { name: /new conversation/i });
+    await user.click(newConvoButtons[0]); // Version A is the first panel
+
+    expect(screen.queryByText("a long stuck conversation")).not.toBeInTheDocument();
+    expect(screen.getAllByText(/pick a model, then send your first message/i).length).toBeGreaterThan(0);
+  });
+
+  it("does not clear the transcript when the student cancels the confirm dialog", async () => {
+    let state = createInitialState();
+    state = startConversation(state, ["lab1", "runA"], "anthropic/claude-haiku-4.5");
+    state = appendMessage(state, ["lab1", "runA"], { role: "user", content: "keep me" });
+    localStorage.setItem(STATE_KEY, serialize(state));
+
+    vi.spyOn(window, "confirm").mockReturnValue(false);
+    const user = userEvent.setup();
+    render(<Harness Screen={Lab1} />);
+
+    const newConvoButtons = screen.getAllByRole("button", { name: /new conversation/i });
+    await user.click(newConvoButtons[0]);
+
+    expect(screen.getByText("keep me")).toBeInTheDocument();
+  });
+});
+
+describe("Lab4 — grounded run case-insert buttons", () => {
+  it("adds one more set of case-insert buttons for the grounded run, not the ungrounded run", () => {
+    render(<Harness Screen={Lab4} />);
+
+    // One set already exists on the task/source field itself (unrelated to this
+    // fix). If the grounded run also has buttons, that's 2; if ungrounded also
+    // got them (which it must NOT — no source material is the point), it'd be 3.
+    expect(screen.getAllByRole("button", { name: /insert c1/i })).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: /insert o3/i })).toHaveLength(2);
   });
 });
