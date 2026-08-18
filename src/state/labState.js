@@ -110,6 +110,16 @@ export function setConversationMessages(state, path, messages) {
   return setIn(state, ["labs", ...path, "messages"], messages);
 }
 
+export function setConversationState(state, path, { model, messages }) {
+  const existing = getIn(state, ["labs", ...path]);
+  const conversation = {
+    model,
+    startedAt: existing?.startedAt ?? new Date().toISOString(),
+    messages,
+  };
+  return setIn(state, ["labs", ...path], conversation);
+}
+
 export function exportBackup(state) {
   const date = new Date().toISOString().slice(0, 10);
   return {

@@ -8,6 +8,7 @@ import {
   importBackup,
   serialize,
   setConversationMessages,
+  setConversationState,
   setStudent,
   startConversation,
   updateLab,
@@ -195,6 +196,41 @@ describe("setConversationMessages", () => {
 
     expect(next.labs.lab1.runA.messages).toEqual(streamedMessages);
     expect(state.labs.lab1.runA.messages).toHaveLength(1);
+  });
+});
+
+describe("setConversationState", () => {
+  it("creates a fresh conversation (with startedAt) when none exists yet at the path", () => {
+    const state = createInitialState();
+    const messages = [{ role: "user", content: "hi", at: "2026-01-01T00:00:00.000Z" }];
+
+    const next = setConversationState(state, ["lab1", "runA"], { model: "claude-haiku", messages });
+
+    expect(next.labs.lab1.runA.model).toBe("claude-haiku");
+    expect(typeof next.labs.lab1.runA.startedAt).toBe("string");
+    expect(next.labs.lab1.runA.messages).toEqual(messages);
+    expect(state.labs.lab1.runA).toBeNull();
+  });
+
+  it("preserves the original startedAt and model when updating an existing conversation's messages", () => {
+    let state = createInitialState();
+    state = startConversation(state, ["lab1", "runA"], "claude-haiku");
+    const originalStartedAt = state.labs.lab1.runA.startedAt;
+
+    const messages = [{ role: "user", content: "hi", at: "2026-01-01T00:00:00.000Z" }];
+    const next = setConversationState(state, ["lab1", "runA"], { model: "claude-haiku", messages });
+
+    expect(next.labs.lab1.runA.startedAt).toBe(originalStartedAt);
+    expect(next.labs.lab1.runA.messages).toEqual(messages);
+  });
+
+  it("allows changing the model while messages are still empty", () => {
+    let state = createInitialState();
+    state = startConversation(state, ["lab1", "runA"], "claude-haiku");
+
+    const next = setConversationState(state, ["lab1", "runA"], { model: "gpt-mini", messages: [] });
+
+    expect(next.labs.lab1.runA.model).toBe("gpt-mini");
   });
 });
 

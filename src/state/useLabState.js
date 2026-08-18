@@ -6,6 +6,8 @@ import {
   deserialize,
   exportBackup as exportBackupState,
   serialize,
+  setConversationMessages,
+  setConversationState,
   setStudent,
   startConversation,
   updateLab,
@@ -50,6 +52,14 @@ export function useLabState() {
       []
     ),
     appendMessage: useCallback((path, message) => dispatch((s) => appendMessage(s, path, message)), []),
+    setConversationMessages: useCallback(
+      (path, messages) => dispatch((s) => setConversationMessages(s, path, messages)),
+      []
+    ),
+    setConversationState: useCallback(
+      (path, conversationPatch) => dispatch((s) => setConversationState(s, path, conversationPatch)),
+      []
+    ),
     restoreState: useCallback((nextState) => dispatch(() => nextState), []),
     exportBackup: useCallback(() => exportBackupState(state), [state]),
   };

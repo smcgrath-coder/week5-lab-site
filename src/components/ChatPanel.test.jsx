@@ -66,8 +66,8 @@ describe("ChatPanel — send and stream", () => {
     );
 
     let conversation = startedConversation();
-    const onUpdate = vi.fn((messages) => {
-      conversation = { ...conversation, messages };
+    const onUpdate = vi.fn(({ model, messages }) => {
+      conversation = { ...conversation, model, messages };
     });
 
     const { rerender } = render(
@@ -99,5 +99,34 @@ describe("ChatPanel — model picker locking", () => {
     render(<ChatPanel conversation={startedConversation()} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
 
     expect(screen.getByLabelText(/model/i)).toBeEnabled();
+  });
+});
+
+describe("ChatPanel — before a conversation is started (conversation is null)", () => {
+  it("still shows case-insert buttons and a usable textarea, not just the model picker", async () => {
+    const user = userEvent.setup();
+    render(<ChatPanel conversation={null} onUpdate={() => {}} caseButtons={["c2"]} label="Test panel" />);
+
+    // the user must be able to insert a case and type *before* touching the model picker
+    expect(screen.getByRole("button", { name: /insert.*c2/i })).toBeInTheDocument();
+    const textarea = screen.getByRole("textbox", { name: /message/i });
+    await user.type(textarea, "hello");
+    expect(textarea.value).toBe("hello");
+  });
+
+  it("starts the conversation with the default model on first send", async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(makeSSEResponse(["data: [DONE]\n\n"])));
+    const onUpdate = vi.fn();
+
+    render(<ChatPanel conversation={null} onUpdate={onUpdate} caseButtons={[]} label="Test panel" />);
+
+    await user.type(screen.getByRole("textbox", { name: /message/i }), "hi");
+    await user.click(screen.getByRole("button", { name: /^send$/i }));
+
+    expect(onUpdate).toHaveBeenCalledWith({
+      model: MODELS[0].openrouterId,
+      messages: [expect.objectContaining({ role: "user", content: "hi" })],
+    });
   });
 });

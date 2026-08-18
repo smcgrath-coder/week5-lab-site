@@ -247,3 +247,282 @@
   color: var(--text);
   margin: 10px 0 0;
 }
+
+/* ---- Hub ---- */
+
+.autosave-indicator {
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.continue-button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 12px 0 28px;
+}
+
+.hub-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.hub-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  padding: 14px 16px;
+}
+
+.hub-card:hover {
+  border-color: var(--accent-border);
+}
+
+.hub-card-title {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.hub-card-status {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.hub-card-status.done {
+  color: #1a7f37;
+  font-weight: 600;
+}
+
+@media (prefers-color-scheme: dark) {
+  .hub-card-status.done {
+    color: #4ade80;
+  }
+}
+
+.finish-link {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-weight: 600;
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.backup-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.backup-controls button,
+.restore-backup-label {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.restore-backup-label input {
+  display: none;
+}
+
+/* ---- Lab screens (shared) ---- */
+
+.back-link {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  padding: 0;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.lab-hint {
+  font-size: 13px;
+  color: var(--text);
+  font-style: italic;
+}
+
+.soft-warning {
+  background: rgba(200, 150, 0, 0.1);
+  border: 1px solid rgba(200, 150, 0, 0.35);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  margin: 8px 0 16px;
+}
+
+.graded-badge {
+  display: inline-block;
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border-radius: 4px;
+  padding: 2px 6px;
+  vertical-align: middle;
+}
+
+.reflection-field textarea {
+  width: 100%;
+  resize: none;
+  overflow: hidden;
+  font-family: var(--sans);
+}
+
+/* Lab 1 */
+
+.task-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.task-card {
+  flex: 1 1 calc(50% - 10px);
+  min-width: 220px;
+  text-align: left;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-card:hover {
+  border-color: var(--accent-border);
+}
+
+.task-card.selected {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+.task-card-lane {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.technique-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.technique-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Lab 2 */
+
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.tab-button {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 10px 4px;
+  margin-right: 20px;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.tab-button.active {
+  color: var(--text-h);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+.lane-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.lane-toggle-button {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  padding: 6px 14px;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+.lane-toggle-button.selected {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+/* Lab 3 */
+
+.lab3-attempt {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.category-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.category-button {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.category-button.selected {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  font-weight: 600;
+}
+
+.add-attempt-button {
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: transparent;
+  padding: 12px;
+  width: 100%;
+  color: var(--text);
+  margin-bottom: 24px;
+}
