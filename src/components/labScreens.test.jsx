@@ -27,9 +27,9 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-function Harness({ Screen }) {
+function Harness({ Screen, onNavigate = () => {} }) {
   const labState = useLabState();
-  return <Screen labState={labState} onNavigate={() => {}} />;
+  return <Screen labState={labState} onNavigate={onNavigate} />;
 }
 
 describe("Landing — course line", () => {
@@ -85,6 +85,53 @@ describe.each([
     render(<Harness Screen={Screen} />);
 
     expect(screen.getByText(/see a worked example/i)).toBeInTheDocument();
+  });
+});
+
+describe("Lab2 — next task navigation", () => {
+  it("moves from 2A to 2B when Next is clicked", async () => {
+    const user = userEvent.setup();
+    render(<Harness Screen={Lab2} />);
+
+    expect(screen.getByRole("tab", { name: /2A/i })).toHaveAttribute("aria-selected", "true");
+    await user.click(screen.getByRole("button", { name: /next: 2B/i }));
+
+    expect(screen.getByRole("tab", { name: /2B/i })).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("moves from 2B to 2C when Next is clicked", async () => {
+    const user = userEvent.setup();
+    render(<Harness Screen={Lab2} />);
+
+    await user.click(screen.getByRole("tab", { name: /2B/i }));
+    await user.click(screen.getByRole("button", { name: /next: 2C/i }));
+
+    expect(screen.getByRole("tab", { name: /2C/i })).toHaveAttribute("aria-selected", "true");
+  });
+
+  it("offers to continue to Lab 3 from 2C", async () => {
+    const user = userEvent.setup();
+    const onNavigate = vi.fn();
+    render(<Harness Screen={Lab2} onNavigate={onNavigate} />);
+
+    await user.click(screen.getByRole("tab", { name: /2C/i }));
+    await user.click(screen.getByRole("button", { name: /continue to lab 3/i }));
+
+    expect(onNavigate).toHaveBeenCalledWith("lab3");
+  });
+});
+
+describe("Lab2 — 2B and 2C copy clarifications", () => {
+  it("does not describe the pasted text as a 'source document' to upload", () => {
+    render(<Harness Screen={Lab2} />);
+
+    expect(LABS.lab2.t2b.description).not.toMatch(/source document/i);
+  });
+
+  it("2C offers the provided fictional abstracts or the student's own", () => {
+    render(<Harness Screen={Lab2} />);
+
+    expect(LABS.lab2.t2c.description).toMatch(/fictional/i);
   });
 });
 

@@ -65,7 +65,8 @@ export const LABS = {
   lab2: {
     goal: "Every task below has a way it tends to fail. I am not going to tell you where. Part of the exercise is catching it.",
     howTo: [
-      "Use the tabs above to move between the three tasks (2A, 2B, 2C), in any order.",
+      "Use the tabs above to move between the three tasks (2A, 2B, 2C), in any order — or click \"Next\" at the bottom of each task to move to the next one.",
+      "For 2B and 2C, type your own instructions in the message box first, then click an Insert button below it to paste the source text in after them.",
       "For each task, run the chat, then answer its reflection question below the chat.",
       "A tab gets a checkmark once its chat and reflection are both done — that's just for tracking, not a required order.",
     ],
@@ -81,14 +82,14 @@ export const LABS = {
       id: "t2b",
       label: "Source to structured summary",
       description:
-        "Give the model a source document and ask it to produce a structured summary from it, nothing more, nothing less.",
+        "Ask the model to produce a structured summary from a short source text, nothing more, nothing less. Use the Insert button below to paste in the provided source text, or paste in your own.",
       reflection: "Did anything appear that wasn't in my source?",
     },
     t2c: {
       id: "t2c",
       label: "Synthesis",
       description:
-        "Same task for everyone: ask the model to synthesize two source items into a short combined summary.",
+        "Ask the model to synthesize two source items into a short combined summary. Use the two fictional abstracts or reports below (click Insert to paste both in at once), or write your own two short source items to synthesize instead.",
       reflection: "Check the citations carefully.",
     },
   },

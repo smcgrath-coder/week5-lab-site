@@ -114,6 +114,9 @@ export default function Lab2({ labState, onNavigate }) {
             value={lab2.t2a.reflection}
             onChange={(value) => updateTask("t2a", { reflection: value })}
           />
+          <button type="button" className="lab2-next-button" onClick={() => setActiveTab("t2b")}>
+            Next: 2B — Source to structured summary →
+          </button>
         </section>
       )}
 
@@ -145,6 +148,9 @@ export default function Lab2({ labState, onNavigate }) {
             value={lab2.t2b.reflection}
             onChange={(value) => updateTask("t2b", { reflection: value })}
           />
+          <button type="button" className="lab2-next-button" onClick={() => setActiveTab("t2c")}>
+            Next: 2C — Synthesis →
+          </button>
         </section>
       )}
 
@@ -163,6 +169,9 @@ export default function Lab2({ labState, onNavigate }) {
             value={lab2.t2c.reflection}
             onChange={(value) => updateTask("t2c", { reflection: value })}
           />
+          <button type="button" className="lab2-next-button" onClick={() => onNavigate("lab3")}>
+            Continue to Lab 3 →
+          </button>
         </section>
       )}
 

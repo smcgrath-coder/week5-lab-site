@@ -573,6 +573,17 @@
   font-weight: 600;
 }
 
+.lab2-next-button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 16px;
+}
+
 .lane-toggle {
   display: flex;
   gap: 8px;
