@@ -23,6 +23,7 @@ export default function Lab4({ labState, onNavigate }) {
           labState.clearConversation(path);
         }
       },
+      onTryDifferentModel: () => labState.clearConversation(path),
     };
   }
 
@@ -34,6 +35,9 @@ export default function Lab4({ labState, onNavigate }) {
 
       <h1>Lab 4 — Grounding and Its Limits</h1>
       <p>{LABS.lab4.goal}</p>
+      <p className="lab-howto" data-testid="lab-howto">
+        {LABS.lab4.howTo}
+      </p>
 
       <ReflectionField
         label={LABS.lab4.fields.taskAndSource.label}
@@ -75,6 +79,10 @@ export default function Lab4({ labState, onNavigate }) {
         value={lab4.reflection}
         onChange={(value) => labState.updateLab("lab4", { reflection: value })}
       />
+
+      <button type="button" className="back-link" onClick={() => onNavigate("hub")}>
+        ← Back to hub
+      </button>
     </div>
   );
 }

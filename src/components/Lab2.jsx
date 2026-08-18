@@ -47,6 +47,7 @@ export default function Lab2({ labState, onNavigate }) {
     const path = ["lab2", taskId, "chat"];
     return {
       onUpdate: ({ model, messages }) => labState.setConversationState(path, { model, messages }),
+      onTryDifferentModel: () => labState.clearConversation(path),
     };
   }
 
@@ -58,6 +59,9 @@ export default function Lab2({ labState, onNavigate }) {
 
       <h1>Lab 2 — Applied Task Labs</h1>
       <p>{LABS.lab2.goal}</p>
+      <p className="lab-howto" data-testid="lab-howto">
+        {LABS.lab2.howTo}
+      </p>
 
       <div className="tab-bar" role="tablist">
         {TABS.map((tab) => (
@@ -153,6 +157,10 @@ export default function Lab2({ labState, onNavigate }) {
           />
         </section>
       )}
+
+      <button type="button" className="back-link" onClick={() => onNavigate("hub")}>
+        ← Back to hub
+      </button>
     </div>
   );
 }

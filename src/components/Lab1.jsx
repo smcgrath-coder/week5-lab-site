@@ -19,6 +19,7 @@ export default function Lab1({ labState, onNavigate }) {
           labState.clearConversation(path);
         }
       },
+      onTryDifferentModel: () => labState.clearConversation(path),
     };
   }
 
@@ -36,6 +37,9 @@ export default function Lab1({ labState, onNavigate }) {
 
       <h1>Lab 1 — Prompt Engineering Fundamentals</h1>
       <p>{LABS.lab1.goal}</p>
+      <p className="lab-howto" data-testid="lab-howto">
+        {LABS.lab1.howTo}
+      </p>
 
       <h2>Pick a task</h2>
       <div className="task-picker">
@@ -99,6 +103,10 @@ export default function Lab1({ labState, onNavigate }) {
         onChange={(value) => labState.updateLab("lab1", { reflectionComparison: value })}
         graded
       />
+
+      <button type="button" className="back-link" onClick={() => onNavigate("hub")}>
+        ← Back to hub
+      </button>
     </div>
   );
 }

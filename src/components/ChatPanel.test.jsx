@@ -153,6 +153,60 @@ describe("ChatPanel — failed send restores the draft", () => {
   });
 });
 
+describe("ChatPanel — message placeholder", () => {
+  it("does not show the old Jupyter-notebook Cmd/Ctrl+Enter hint", () => {
+    render(<ChatPanel conversation={startedConversation()} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
+
+    expect(screen.getByRole("textbox", { name: /message/i })).not.toHaveAttribute(
+      "placeholder",
+      expect.stringMatching(/cmd|ctrl/i)
+    );
+  });
+});
+
+describe("ChatPanel — try a different model", () => {
+  it("shows a 'Try a different model' button once the model is locked, and clears the transcript without a confirm dialog when clicked", async () => {
+    const user = userEvent.setup();
+    const confirmSpy = vi.spyOn(window, "confirm");
+    const withReply = startedConversation({
+      messages: [
+        { role: "user", content: "hi", at: "2026-01-01T00:00:01.000Z" },
+        { role: "assistant", content: "hello", at: "2026-01-01T00:00:02.000Z" },
+      ],
+    });
+    const onTryDifferentModel = vi.fn();
+
+    render(
+      <ChatPanel
+        conversation={withReply}
+        onUpdate={() => {}}
+        caseButtons={[]}
+        label="Test panel"
+        onTryDifferentModel={onTryDifferentModel}
+      />
+    );
+
+    await user.click(screen.getByRole("button", { name: /try a different model/i }));
+
+    expect(onTryDifferentModel).toHaveBeenCalled();
+    expect(confirmSpy).not.toHaveBeenCalled();
+  });
+
+  it("does not show the button while the model picker is still unlocked", () => {
+    render(
+      <ChatPanel
+        conversation={startedConversation()}
+        onUpdate={() => {}}
+        caseButtons={[]}
+        label="Test panel"
+        onTryDifferentModel={() => {}}
+      />
+    );
+
+    expect(screen.queryByRole("button", { name: /try a different model/i })).not.toBeInTheDocument();
+  });
+});
+
 describe("ChatPanel — before a conversation is started (conversation is null)", () => {
   it("still shows case-insert buttons and a usable textarea, not just the model picker", async () => {
     const user = userEvent.setup();

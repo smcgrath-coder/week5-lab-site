@@ -21,6 +21,7 @@ export default function Lab3({ labState, onNavigate }) {
           labState.clearConversation(path);
         }
       },
+      onTryDifferentModel: () => labState.clearConversation(path),
     };
   }
 
@@ -32,6 +33,9 @@ export default function Lab3({ labState, onNavigate }) {
 
       <h1>Lab 3 — Break It on Purpose</h1>
       <p>{LABS.lab3.goal}</p>
+      <p className="lab-howto" data-testid="lab-howto">
+        {LABS.lab3.howTo}
+      </p>
 
       {lab3.attempts.map((attempt, index) => (
         <div key={index} className="lab3-attempt">
@@ -97,6 +101,10 @@ export default function Lab3({ labState, onNavigate }) {
         value={lab3.almostGotPastMe}
         onChange={(value) => labState.updateLab("lab3", { almostGotPastMe: value })}
       />
+
+      <button type="button" className="back-link" onClick={() => onNavigate("hub")}>
+        ← Back to hub
+      </button>
     </div>
   );
 }

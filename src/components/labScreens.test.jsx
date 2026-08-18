@@ -32,6 +32,38 @@ function Harness({ Screen }) {
   return <Screen labState={labState} onNavigate={() => {}} />;
 }
 
+describe("Landing — course line", () => {
+  it("does not mention UC Davis School of Medicine", () => {
+    expect(LABS.intro.courseLine).not.toMatch(/UC Davis School of Medicine/i);
+  });
+});
+
+describe.each([
+  ["Lab1", Lab1],
+  ["Lab2", Lab2],
+  ["Lab3", Lab3],
+  ["Lab4", Lab4],
+])("%s — back to hub link", (name, Screen) => {
+  it("shows a back-to-hub link at both the top and the bottom of the screen", () => {
+    render(<Harness Screen={Screen} />);
+
+    expect(screen.getAllByRole("button", { name: /back to hub/i }).length).toBeGreaterThanOrEqual(2);
+  });
+});
+
+describe.each([
+  ["Lab1", Lab1],
+  ["Lab2", Lab2],
+  ["Lab3", Lab3],
+  ["Lab4", Lab4],
+])("%s — how-to instructions", (name, Screen) => {
+  it("shows instructions for how to proceed through the lab", () => {
+    render(<Harness Screen={Screen} />);
+
+    expect(screen.getByTestId("lab-howto")).toBeInTheDocument();
+  });
+});
+
 describe("Lab1 — task picker", () => {
   it("shows all 4 task options", () => {
     render(<Harness Screen={Lab1} />);

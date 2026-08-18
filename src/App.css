@@ -237,6 +237,17 @@
   border: 1px solid var(--border) !important;
 }
 
+.chat-try-different-model {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  padding: 4px 10px;
+  margin: -8px 0 12px;
+  cursor: pointer;
+}
+
 .phi-reminder {
   font-size: 12px;
   color: var(--text);
@@ -360,6 +371,21 @@
   padding: 0;
   margin-bottom: 16px;
   font-size: 14px;
+}
+
+.back-link:last-child {
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
+.lab-howto {
+  font-size: 14px;
+  color: var(--text);
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
 }
 
 .lab-hint {

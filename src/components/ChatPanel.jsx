@@ -12,6 +12,7 @@ export default function ChatPanel({
   label,
   allowNewConversation = false,
   onNewConversation,
+  onTryDifferentModel,
 }) {
   const passcode = usePasscode();
   const [pendingModel, setPendingModel] = useState(MODELS[0].openrouterId);
@@ -78,6 +79,12 @@ export default function ChatPanel({
         </select>
       </label>
 
+      {hasAssistantReply && onTryDifferentModel && (
+        <button type="button" className="chat-try-different-model" onClick={onTryDifferentModel}>
+          Try a different model
+        </button>
+      )}
+
       {!hasMessages && <p className="chat-empty-hint">Pick a model, then send your first message.</p>}
 
       <div className="chat-messages">
@@ -112,7 +119,7 @@ export default function ChatPanel({
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={handleKeyDown}
           rows={4}
-          placeholder="Type your message… (Cmd/Ctrl+Enter to send)"
+          placeholder="Type your message…"
         />
       </label>
 
