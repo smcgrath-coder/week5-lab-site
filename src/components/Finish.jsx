@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { generatePdfBlob } from "../pdf/LabPdf";
 import { getCompleteness } from "../state/completeness";
 import { usePasscode } from "../state/passcode";
 
@@ -25,6 +24,7 @@ export default function Finish({ labState, onNavigate }) {
   const allMissing = Object.values(completeness).flatMap((c) => c.missing);
 
   async function handleDownload() {
+    const { generatePdfBlob } = await import("../pdf/LabPdf");
     const blob = await generatePdfBlob(labState.state);
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -37,6 +37,7 @@ export default function Finish({ labState, onNavigate }) {
   async function handleEmail() {
     setEmailStatus("sending");
     try {
+      const { generatePdfBlob } = await import("../pdf/LabPdf");
       const blob = await generatePdfBlob(labState.state);
       const pdfBase64 = await blobToBase64(blob);
       const res = await fetch("/api/email", {
