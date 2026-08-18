@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ChatPanel from "./ChatPanel";
+import LabProgress from "./LabProgress";
 import ReflectionField from "./ReflectionField";
 import { CASE_PACK } from "../data/casePack";
 import { LABS } from "../data/labs";
@@ -31,6 +32,8 @@ export default function Lab2({ labState, onNavigate }) {
   const studentLane = labState.state.student.lane;
   const [activeTab, setActiveTab] = useState("t2a");
 
+  const progressSteps = TABS.map((tab) => ({ label: tab.label, done: isTaskDone(lab2[tab.id]) }));
+
   function updateTask(taskId, patch) {
     labState.updateLab("lab2", { [taskId]: { ...lab2[taskId], ...patch } });
   }
@@ -59,9 +62,14 @@ export default function Lab2({ labState, onNavigate }) {
 
       <h1>Lab 2 — Applied Task Labs</h1>
       <p>{LABS.lab2.goal}</p>
-      <p className="lab-howto" data-testid="lab-howto">
-        {LABS.lab2.howTo}
-      </p>
+      <LabProgress steps={progressSteps} />
+      <div className="lab-howto" data-testid="lab-howto">
+        <ol>
+          {LABS.lab2.howTo.map((step, i) => (
+            <li key={i}>{step}</li>
+          ))}
+        </ol>
+      </div>
 
       <div className="tab-bar" role="tablist">
         {TABS.map((tab) => (

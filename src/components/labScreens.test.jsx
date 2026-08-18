@@ -64,6 +64,44 @@ describe.each([
   });
 });
 
+describe.each([
+  ["Lab1", Lab1],
+  ["Lab2", Lab2],
+  ["Lab3", Lab3],
+  ["Lab4", Lab4],
+])("%s — progress indicator", (name, Screen) => {
+  it("shows a step progress indicator", () => {
+    render(<Harness Screen={Screen} />);
+
+    expect(screen.getByTestId("lab-progress")).toBeInTheDocument();
+  });
+});
+
+describe.each([
+  ["Lab3", Lab3],
+  ["Lab4", Lab4],
+])("%s — worked example", (name, Screen) => {
+  it("includes a worked example the student can open", () => {
+    render(<Harness Screen={Screen} />);
+
+    expect(screen.getByText(/see a worked example/i)).toBeInTheDocument();
+  });
+});
+
+describe("Lab1 — progress indicator updates as work is done", () => {
+  it("increases the done count once a task is picked", async () => {
+    const user = userEvent.setup();
+    render(<Harness Screen={Lab1} />);
+
+    const before = screen.getByTestId("lab-progress").textContent;
+    await user.click(screen.getByText(LABS.lab1.taskOptions[0].label));
+    const after = screen.getByTestId("lab-progress").textContent;
+
+    expect(after).not.toBe(before);
+    expect(after).toMatch(/1 of 4/);
+  });
+});
+
 describe("Lab1 — task picker", () => {
   it("shows all 4 task options", () => {
     render(<Harness Screen={Lab1} />);

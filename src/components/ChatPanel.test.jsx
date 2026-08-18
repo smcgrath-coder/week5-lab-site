@@ -207,6 +207,86 @@ describe("ChatPanel — try a different model", () => {
   });
 });
 
+describe("ChatPanel — composer reveal on demand", () => {
+  it("shows the message box by default when there are no messages yet", () => {
+    render(<ChatPanel conversation={startedConversation()} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
+
+    expect(screen.getByRole("textbox", { name: /message/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /add another message/i })).not.toBeInTheDocument();
+  });
+
+  it("hides the message box and shows 'Add another message' once a reply has already arrived (e.g. a resumed session)", () => {
+    const withReply = startedConversation({
+      messages: [
+        { role: "user", content: "hi", at: "2026-01-01T00:00:01.000Z" },
+        { role: "assistant", content: "hello", at: "2026-01-01T00:00:02.000Z" },
+      ],
+    });
+    render(<ChatPanel conversation={withReply} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
+
+    expect(screen.queryByRole("textbox", { name: /message/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /add another message/i })).toBeInTheDocument();
+  });
+
+  it("reveals the message box again when 'Add another message' is clicked", async () => {
+    const user = userEvent.setup();
+    const withReply = startedConversation({
+      messages: [
+        { role: "user", content: "hi", at: "2026-01-01T00:00:01.000Z" },
+        { role: "assistant", content: "hello", at: "2026-01-01T00:00:02.000Z" },
+      ],
+    });
+    render(<ChatPanel conversation={withReply} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
+
+    await user.click(screen.getByRole("button", { name: /add another message/i }));
+
+    expect(screen.getByRole("textbox", { name: /message/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /add another message/i })).not.toBeInTheDocument();
+  });
+
+  it("collapses the composer again automatically once a send completes successfully", async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(makeSSEResponse([sseChunk("hello there"), "data: [DONE]\n\n"]))
+    );
+
+    let conversation = startedConversation();
+    const onUpdate = vi.fn(({ model, messages }) => {
+      conversation = { ...conversation, model, messages };
+    });
+
+    const { rerender } = render(
+      <ChatPanel conversation={conversation} onUpdate={onUpdate} caseButtons={[]} label="Test panel" />
+    );
+
+    await user.type(screen.getByRole("textbox", { name: /message/i }), "hi");
+    await user.click(screen.getByRole("button", { name: /^send$/i }));
+    rerender(<ChatPanel conversation={conversation} onUpdate={onUpdate} caseButtons={[]} label="Test panel" />);
+
+    expect(await screen.findByRole("button", { name: /add another message/i })).toBeInTheDocument();
+    expect(screen.queryByRole("textbox", { name: /message/i })).not.toBeInTheDocument();
+  });
+
+  it("keeps the composer open when a send fails, so the restored draft is still editable", async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({ ok: false, status: 429, json: async () => ({ error: "Daily limit reached." }) })
+    );
+
+    render(
+      <ChatPanel conversation={startedConversation()} onUpdate={() => {}} caseButtons={[]} label="Test panel" />
+    );
+
+    await user.type(screen.getByRole("textbox", { name: /message/i }), "hi");
+    await user.click(screen.getByRole("button", { name: /^send$/i }));
+
+    expect(await screen.findByText(/daily limit reached/i)).toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: /message/i })).toBeInTheDocument();
+  });
+});
+
 describe("ChatPanel — before a conversation is started (conversation is null)", () => {
   it("still shows case-insert buttons and a usable textarea, not just the model picker", async () => {
     const user = userEvent.setup();

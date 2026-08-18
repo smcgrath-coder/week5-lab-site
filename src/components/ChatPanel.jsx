@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { CASE_PACK, FICTIONAL_NOTE } from "../data/casePack";
 import { MODELS } from "../data/models";
@@ -21,6 +21,12 @@ export default function ChatPanel({
   const effectiveConversation = conversation ?? { model: pendingModel, messages: [] };
   const hasMessages = effectiveConversation.messages.length > 0;
   const hasAssistantReply = effectiveConversation.messages.some((m) => m.role === "assistant");
+
+  const [composerOpen, setComposerOpen] = useState(() => !hasAssistantReply);
+
+  useEffect(() => {
+    if (!hasMessages) setComposerOpen(true);
+  }, [hasMessages]);
 
   function wrappedOnUpdate(messages) {
     onUpdate({ model: effectiveConversation.model, messages });
@@ -54,6 +60,8 @@ export default function ChatPanel({
     const result = await send(text);
     if (result && result.ok === false) {
       setDraft(text);
+    } else {
+      setComposerOpen(false);
     }
   }
 
@@ -96,49 +104,64 @@ export default function ChatPanel({
         ))}
       </div>
 
-      {caseButtons.length > 0 && (
-        <div className="case-buttons">
-          {caseButtons.map((caseId) => {
-            const item = CASE_PACK.find((c) => c.id === caseId);
-            if (!item) return null;
-            return (
-              <button key={caseId} type="button" onClick={() => handleInsertCase(caseId)}>
-                Insert {item.title}
+      {composerOpen ? (
+        <>
+          {caseButtons.length > 0 && (
+            <div className="case-buttons">
+              {caseButtons.map((caseId) => {
+                const item = CASE_PACK.find((c) => c.id === caseId);
+                if (!item) return null;
+                return (
+                  <button key={caseId} type="button" onClick={() => handleInsertCase(caseId)}>
+                    Insert {item.title}
+                  </button>
+                );
+              })}
+              <p className="case-note">{FICTIONAL_NOTE}</p>
+            </div>
+          )}
+
+          <label className="field">
+            <span className="sr-only">Message</span>
+            <textarea
+              aria-label="Message"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={handleKeyDown}
+              rows={4}
+              placeholder="Type your message…"
+            />
+          </label>
+
+          {error && (
+            <p className="error-banner" role="alert">
+              {error}
+            </p>
+          )}
+
+          <div className="chat-actions">
+            <button type="button" onClick={handleSend} disabled={!draft.trim() || isStreaming}>
+              {isStreaming ? "Sending…" : "Send"}
+            </button>
+            {allowNewConversation && (
+              <button type="button" className="chat-new-conversation" onClick={onNewConversation}>
+                New conversation
               </button>
-            );
-          })}
-          <p className="case-note">{FICTIONAL_NOTE}</p>
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="chat-actions">
+          <button type="button" className="chat-add-message" onClick={() => setComposerOpen(true)}>
+            Add another message
+          </button>
+          {allowNewConversation && (
+            <button type="button" className="chat-new-conversation" onClick={onNewConversation}>
+              New conversation
+            </button>
+          )}
         </div>
       )}
-
-      <label className="field">
-        <span className="sr-only">Message</span>
-        <textarea
-          aria-label="Message"
-          value={draft}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={handleKeyDown}
-          rows={4}
-          placeholder="Type your message…"
-        />
-      </label>
-
-      {error && (
-        <p className="error-banner" role="alert">
-          {error}
-        </p>
-      )}
-
-      <div className="chat-actions">
-        <button type="button" onClick={handleSend} disabled={!draft.trim() || isStreaming}>
-          {isStreaming ? "Sending…" : "Send"}
-        </button>
-        {allowNewConversation && (
-          <button type="button" className="chat-new-conversation" onClick={onNewConversation}>
-            New conversation
-          </button>
-        )}
-      </div>
 
       <p className="phi-reminder">
         Reminder: never enter real patient information or PHI. Use fictional cases only. Long

@@ -388,6 +388,78 @@
   margin-bottom: 20px;
 }
 
+.lab-howto ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.lab-howto li {
+  margin-bottom: 6px;
+}
+
+.lab-howto li:last-child {
+  margin-bottom: 0;
+}
+
+.lab-progress {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+}
+
+.lab-progress-summary {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0 0 6px;
+}
+
+.lab-progress ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.lab-progress li {
+  font-size: 13px;
+  color: var(--text);
+}
+
+.lab-progress-done {
+  color: var(--text-h);
+}
+
+.lab-example {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+}
+
+.lab-example summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-h);
+}
+
+.lab-example-body {
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.lab-example-body p {
+  margin-bottom: 10px;
+}
+
+.lab-example-exchange {
+  margin-bottom: 12px;
+}
+
 .lab-hint {
   font-size: 13px;
   color: var(--text);

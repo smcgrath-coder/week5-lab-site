@@ -1,10 +1,27 @@
 import ChatPanel from "./ChatPanel";
+import LabExample from "./LabExample";
+import LabProgress from "./LabProgress";
 import ReflectionField from "./ReflectionField";
 import { CASE_PACK, FICTIONAL_NOTE } from "../data/casePack";
 import { LABS } from "../data/labs";
 
+function hasAssistantReply(conversation) {
+  return Boolean(conversation?.messages?.some((m) => m.role === "assistant"));
+}
+
+function nonBlank(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 export default function Lab4({ labState, onNavigate }) {
   const lab4 = labState.state.labs.lab4;
+
+  const progressSteps = [
+    { label: "Task & source", done: nonBlank(lab4.taskAndSource) },
+    { label: "Ungrounded run", done: hasAssistantReply(lab4.ungrounded) },
+    { label: "Grounded run", done: hasAssistantReply(lab4.grounded) },
+    { label: "Reflection", done: nonBlank(lab4.reflection) },
+  ];
 
   function insertCase(caseId) {
     const item = CASE_PACK.find((c) => c.id === caseId);
@@ -35,9 +52,29 @@ export default function Lab4({ labState, onNavigate }) {
 
       <h1>Lab 4 — Grounding and Its Limits</h1>
       <p>{LABS.lab4.goal}</p>
-      <p className="lab-howto" data-testid="lab-howto">
-        {LABS.lab4.howTo}
-      </p>
+      <LabProgress steps={progressSteps} />
+      <div className="lab-howto" data-testid="lab-howto">
+        <ol>
+          {LABS.lab4.howTo.map((step, i) => (
+            <li key={i}>{step}</li>
+          ))}
+        </ol>
+      </div>
+
+      <LabExample>
+        <p>
+          <strong>{LABS.lab4.fields.taskAndSource.label}:</strong> {LABS.lab4.example.taskAndSource}
+        </p>
+        <p>
+          <strong>{LABS.lab4.fields.ungrounded.label}:</strong> {LABS.lab4.example.ungrounded}
+        </p>
+        <p>
+          <strong>{LABS.lab4.fields.grounded.label}:</strong> {LABS.lab4.example.grounded}
+        </p>
+        <p>
+          <strong>{LABS.lab4.fields.reflection.label}:</strong> {LABS.lab4.example.reflection}
+        </p>
+      </LabExample>
 
       <ReflectionField
         label={LABS.lab4.fields.taskAndSource.label}

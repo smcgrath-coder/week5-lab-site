@@ -14,8 +14,12 @@ export const LABS = {
 
   lab1: {
     goal: "Run the same underlying task two ways: a fast, throwaway prompt, and a deliberately structured one. Then you can see in your own transcripts what structure actually buys you.",
-    howTo:
-      "Pick one task below, then run Version A first. Once you have a reply, move to Version B: check off the techniques you're using, then send a deliberately structured prompt for the same task. Finish by answering the comparison question at the bottom.",
+    howTo: [
+      "Pick one task below.",
+      "Send a fast, unstructured prompt for that task in Version A.",
+      "Once Version A replies, check off the techniques you're using, then send a deliberately structured prompt for the same task in Version B.",
+      "Answer the comparison question at the bottom.",
+    ],
     taskOptions: [
       {
         id: "t2dDischarge",
@@ -60,8 +64,11 @@ export const LABS = {
 
   lab2: {
     goal: "Every task below has a way it tends to fail. I am not going to tell you where. Part of the exercise is catching it.",
-    howTo:
-      "Use the tabs above to move between the three tasks (2A, 2B, 2C) in any order. Each one needs a completed chat and a reflection before it gets a checkmark — the checkmarks are just there to help you track progress, not a required order.",
+    howTo: [
+      "Use the tabs above to move between the three tasks (2A, 2B, 2C), in any order.",
+      "For each task, run the chat, then answer its reflection question below the chat.",
+      "A tab gets a checkmark once its chat and reflection are both done — that's just for tracking, not a required order.",
+    ],
     t2a: {
       id: "t2a",
       label: "Reading level",
@@ -88,8 +95,12 @@ export const LABS = {
 
   lab3: {
     goal: "Lab 3 is the core of the week: make each model fail on purpose, then document exactly how you caught it.",
-    howTo:
-      "You need at least two attempts below, using at least two different failure categories. Pick a category, try to provoke that failure in the chat, then fill in the documentation fields for that attempt. Use \"+ Add another failure attempt\" for each new attempt, and remove any you don't want to keep.",
+    howTo: [
+      "Pick a failure category below for Attempt 1, then try to provoke that kind of failure in the chat underneath it. Adversarial prompting is fair game — you're allowed to push, rephrase, and try again within that one chat.",
+      "Once you have an exchange that shows the failure (or clearly shows you couldn't provoke it after real effort), fill in the three documentation fields for that attempt.",
+      "Click \"+ Add another failure attempt\" to start the next one. You need at least 2 attempts total, using at least 2 different categories.",
+      "Not sure what \"caught\" means in practice? See the worked example below.",
+    ],
     failureCategories: [
       { id: "confidentWrong", label: "Confident wrong answer" },
       {
@@ -114,12 +125,40 @@ export const LABS = {
     optionalPrompt: "A failure that almost got past you (optional)",
     minAttempts: 2,
     minDistinctCategories: 2,
+    example: {
+      category: "Fabricated citation, guideline, study, or statistic",
+      exchange: [
+        {
+          role: "user",
+          content:
+            "Summarize the current guideline on ACE inhibitor use during pregnancy, and cite your source.",
+        },
+        {
+          role: "assistant",
+          content:
+            "Per ACOG Practice Bulletin No. 245 (2024), ACE inhibitors are contraindicated in all trimesters due to fetal renal toxicity, and patients should be switched to labetalol or nifedipine prior to conception when possible.",
+        },
+      ],
+      fields: {
+        tried:
+          "Asked for a guideline summary with a citation, on a topic I could actually check afterward.",
+        produced:
+          "A confident answer citing \"ACOG Practice Bulletin No. 245 (2024)\" with a specific recommendation.",
+        caught:
+          "I looked up ACOG's actual bulletin list and No. 245 doesn't cover this topic. When I asked the model to give me the bulletin's publication date again, it gave a different year than the first answer. The clinical content sounded plausible, which is exactly what made it worth checking.",
+      },
+    },
   },
 
   lab4: {
     goal: "Run the same task two ways: once with no source material, once grounded in a source you provide. Then compare what grounding fixes and what it doesn't.",
-    howTo:
-      "Fill in the task and source field below first. Run the ungrounded chat with just the task, then run the grounded chat with the source pasted in too, then answer the reflection at the bottom comparing what changed.",
+    howTo: [
+      "Fill in the field below: write the task you'll give the model, and paste in the source text you'll use for the grounded run.",
+      "Run the ungrounded chat first, using only the task — no source.",
+      "Run the grounded chat next, pasting the source in along with the same task.",
+      "Answer the reflection at the bottom, comparing what grounding fixed and what it didn't.",
+      "Not sure what to look for? See the worked example below.",
+    ],
     fields: {
       taskAndSource: {
         label: "The task, and the source text I used for the grounded run",
@@ -130,6 +169,16 @@ export const LABS = {
         label:
           "What did grounding fix? What did it NOT fix? Did any error survive even with the source in front of it?",
       },
+    },
+    example: {
+      taskAndSource:
+        "Task: summarize this clinic's new patient intake policy in 3 bullet points for front-desk staff. Source: [a two-paragraph fictional intake policy pasted from the case pack]",
+      ungrounded:
+        "Without the source, the model produced 3 plausible-sounding bullet points, but one of them invented a $25 late-arrival fee our policy doesn't mention anywhere.",
+      grounded:
+        "With the source pasted in, the fee disappeared and the three bullets matched our actual steps. The model still added one detail on its own: a \"15 minutes early\" arrival recommendation that isn't stated in the source.",
+      reflection:
+        "Grounding fixed the invented fee, but it didn't stop the model from adding one small unstated detail. Even with a source in front of it, I'd still want to double-check the output line by line rather than trust it because a source was provided.",
     },
   },
 

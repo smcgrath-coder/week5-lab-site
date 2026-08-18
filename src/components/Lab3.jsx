@@ -1,9 +1,43 @@
 import ChatPanel from "./ChatPanel";
+import LabExample from "./LabExample";
+import LabProgress from "./LabProgress";
 import ReflectionField from "./ReflectionField";
 import { LABS } from "../data/labs";
 
+function hasAssistantReply(conversation) {
+  return Boolean(conversation?.messages?.some((m) => m.role === "assistant"));
+}
+
+function nonBlank(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function isAttemptDone(attempt) {
+  return (
+    Boolean(attempt.category) &&
+    hasAssistantReply(attempt.chat) &&
+    LABS.lab3.documentationFields.every((field) => nonBlank(attempt[field.id]))
+  );
+}
+
 export default function Lab3({ labState, onNavigate }) {
   const lab3 = labState.state.labs.lab3;
+
+  const distinctCategories = new Set(lab3.attempts.map((a) => a.category).filter(Boolean)).size;
+  const progressSteps = [
+    {
+      label: `At least ${LABS.lab3.minAttempts} attempts`,
+      done: lab3.attempts.length >= LABS.lab3.minAttempts,
+    },
+    {
+      label: `At least ${LABS.lab3.minDistinctCategories} different categories`,
+      done: distinctCategories >= LABS.lab3.minDistinctCategories,
+    },
+    {
+      label: "All attempts fully documented",
+      done: lab3.attempts.length > 0 && lab3.attempts.every(isAttemptDone),
+    },
+  ];
 
   function isDuplicateCategory(index) {
     const category = lab3.attempts[index].category;
@@ -33,9 +67,33 @@ export default function Lab3({ labState, onNavigate }) {
 
       <h1>Lab 3 — Break It on Purpose</h1>
       <p>{LABS.lab3.goal}</p>
-      <p className="lab-howto" data-testid="lab-howto">
-        {LABS.lab3.howTo}
-      </p>
+      <LabProgress steps={progressSteps} />
+      <div className="lab-howto" data-testid="lab-howto">
+        <ol>
+          {LABS.lab3.howTo.map((step, i) => (
+            <li key={i}>{step}</li>
+          ))}
+        </ol>
+      </div>
+
+      <LabExample>
+        <p>
+          <strong>Category:</strong> {LABS.lab3.example.category}
+        </p>
+        <div className="lab-example-exchange">
+          {LABS.lab3.example.exchange.map((m, i) => (
+            <div key={i} className={`chat-message chat-message-${m.role}`}>
+              <span className="chat-message-role">{m.role === "user" ? "You" : "Model"}</span>
+              <p>{m.content}</p>
+            </div>
+          ))}
+        </div>
+        {LABS.lab3.documentationFields.map((field) => (
+          <p key={field.id}>
+            <strong>{field.label}:</strong> {LABS.lab3.example.fields[field.id]}
+          </p>
+        ))}
+      </LabExample>
 
       {lab3.attempts.map((attempt, index) => (
         <div key={index} className="lab3-attempt">

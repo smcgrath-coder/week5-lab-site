@@ -1,4 +1,5 @@
 import ChatPanel from "./ChatPanel";
+import LabProgress from "./LabProgress";
 import ReflectionField from "./ReflectionField";
 import { LABS } from "../data/labs";
 
@@ -6,8 +7,19 @@ function hasAssistantReply(conversation) {
   return Boolean(conversation?.messages?.some((m) => m.role === "assistant"));
 }
 
+function nonBlank(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
 export default function Lab1({ labState, onNavigate }) {
   const lab1 = labState.state.labs.lab1;
+
+  const progressSteps = [
+    { label: "Pick a task", done: Boolean(lab1.taskChoice) },
+    { label: "Version A", done: hasAssistantReply(lab1.runA) },
+    { label: "Version B", done: hasAssistantReply(lab1.runB) },
+    { label: "Comparison", done: nonBlank(lab1.reflectionComparison) },
+  ];
 
   function makeChatHandlers(slot) {
     const path = ["lab1", slot];
@@ -37,9 +49,14 @@ export default function Lab1({ labState, onNavigate }) {
 
       <h1>Lab 1 — Prompt Engineering Fundamentals</h1>
       <p>{LABS.lab1.goal}</p>
-      <p className="lab-howto" data-testid="lab-howto">
-        {LABS.lab1.howTo}
-      </p>
+      <LabProgress steps={progressSteps} />
+      <div className="lab-howto" data-testid="lab-howto">
+        <ol>
+          {LABS.lab1.howTo.map((step, i) => (
+            <li key={i}>{step}</li>
+          ))}
+        </ol>
+      </div>
 
       <h2>Pick a task</h2>
       <div className="task-picker">
