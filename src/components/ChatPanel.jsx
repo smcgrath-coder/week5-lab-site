@@ -84,11 +84,7 @@ export default function ChatPanel({
         {effectiveConversation.messages.map((m) => (
           <div key={`${m.role}-${m.at}`} className={`chat-message chat-message-${m.role}`}>
             <span className="chat-message-role">{m.role === "user" ? "You" : "Model"}</span>
-            {m.role === "assistant" ? (
-              <ReactMarkdown>{m.content}</ReactMarkdown>
-            ) : (
-              <p className="chat-message-text">{m.content}</p>
-            )}
+            <ReactMarkdown>{m.content}</ReactMarkdown>
           </div>
         ))}
       </div>

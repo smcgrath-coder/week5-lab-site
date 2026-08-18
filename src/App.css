@@ -168,11 +168,6 @@
   margin-bottom: 4px;
 }
 
-.chat-message-text {
-  white-space: pre-wrap;
-  margin: 0;
-}
-
 .chat-message p {
   margin: 0 0 8px;
 }

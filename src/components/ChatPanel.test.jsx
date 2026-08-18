@@ -114,6 +114,24 @@ describe("ChatPanel — model picker locking", () => {
   });
 });
 
+describe("ChatPanel — user messages render as markdown too", () => {
+  it("renders a bulleted list pasted from a case as an actual list, not raw dashes", () => {
+    const withPastedCase = startedConversation({
+      messages: [
+        { role: "user", content: "- First step\n- Second step", at: "2026-01-01T00:00:01.000Z" },
+      ],
+    });
+    render(
+      <ChatPanel conversation={withPastedCase} onUpdate={() => {}} caseButtons={[]} label="Test panel" />
+    );
+
+    // real <li> list items, not the literal text "- First step"
+    const items = screen.getAllByRole("listitem");
+    expect(items.map((li) => li.textContent)).toEqual(["First step", "Second step"]);
+    expect(screen.queryByText(/^- First step/)).not.toBeInTheDocument();
+  });
+});
+
 describe("ChatPanel — failed send restores the draft", () => {
   it("puts the typed message back in the textarea when the send fails", async () => {
     const user = userEvent.setup();
