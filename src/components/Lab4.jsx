@@ -50,7 +50,7 @@ export default function Lab4({ labState, onNavigate }) {
       </div>
 
       <h2>Ungrounded run</h2>
-      <p className="lab-hint">No source material here — see what the model does with just the task.</p>
+      <p className="lab-hint">No source material here. See what the model does with just the task.</p>
       <ChatPanel
         conversation={lab4.ungrounded}
         caseButtons={[]}
@@ -60,7 +60,7 @@ export default function Lab4({ labState, onNavigate }) {
 
       <h2>Grounded run</h2>
       <p className="lab-hint">
-        Paste your source text into the chat along with your task — the model can only see what you
+        Paste your source text into the chat along with your task. The model can only see what you
         send it. Use the insert-case buttons below, or paste your own source.
       </p>
       <ChatPanel

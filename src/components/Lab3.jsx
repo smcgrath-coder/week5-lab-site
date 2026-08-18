@@ -65,8 +65,8 @@ export default function Lab3({ labState, onNavigate }) {
           </div>
           {isDuplicateCategory(index) && (
             <p className="soft-warning">
-              You've already used this category in another attempt — the assignment asks for at
-              least two different categories. You can still continue with this one.
+              You've already used this category in another attempt. The assignment asks for at
+              least two different categories, but you can still continue with this one.
             </p>
           )}
 

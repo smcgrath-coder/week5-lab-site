@@ -46,7 +46,7 @@ describe("Finish — email submission", () => {
     await user.click(screen.getByRole("button", { name: /email a copy to my instructor/i }));
 
     expect(
-      await screen.findByText(/email failed — download the pdf and submit it on canvas instead/i)
+      await screen.findByText(/email failed\. download the pdf and submit it on canvas instead/i)
     ).toBeInTheDocument();
   });
 });

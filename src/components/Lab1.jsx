@@ -66,7 +66,7 @@ export default function Lab1({ labState, onNavigate }) {
       <h2>Version B — structured</h2>
       {!hasAssistantReply(lab1.runA) && (
         <p className="soft-warning">
-          Tip: try Version A first so you have something concrete to compare against — but you can
+          Tip: try Version A first so you have something concrete to compare against, but you can
           start B whenever you're ready.
         </p>
       )}

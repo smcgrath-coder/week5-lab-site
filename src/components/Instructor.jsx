@@ -33,7 +33,7 @@ export default function Instructor() {
     <div className="lab-screen">
       <h1>Instructor — OpenRouter Balance</h1>
       <p className="lab-hint">
-        This page isn't linked from student navigation — bookmark the <code>#instructor</code> URL to
+        This page isn't linked from student navigation. Bookmark the <code>#instructor</code> URL to
         return to it.
       </p>
 

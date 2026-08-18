@@ -84,15 +84,15 @@ export default function Finish({ labState, onNavigate }) {
         </button>
       </div>
 
-      {emailStatus === "success" && <p className="email-success">Sent — your instructor has a copy.</p>}
+      {emailStatus === "success" && <p className="email-success">Sent. Your instructor has a copy.</p>}
       {emailStatus === "error" && (
         <p className="error-banner" role="alert">
-          Email failed — download the PDF and submit it on Canvas instead.
+          Email failed. Download the PDF and submit it on Canvas instead.
         </p>
       )}
 
       <p className="lab-hint">
-        Canvas upload is the official submission either way — the PDF download always works, even if
+        Canvas upload is the official submission either way. The PDF download always works, even if
         email doesn't.
       </p>
     </div>

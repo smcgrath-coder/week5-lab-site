@@ -28,7 +28,7 @@ export default function Landing({ initialStudent, onSuccess }) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.error || "That passcode isn't right — check with your instructor.");
+        setError(data.error || "That passcode isn't right. Check with your instructor.");
         setChecking(false);
         return;
       }
@@ -88,7 +88,7 @@ export default function Landing({ initialStudent, onSuccess }) {
           </button>
         ))}
       </div>
-      <p className="lane-note">You can switch lanes per task later — this is just a starting point.</p>
+      <p className="lane-note">You can switch lanes per task later. This is just a starting point.</p>
 
       <label className="field">
         <span>Class passcode</span>

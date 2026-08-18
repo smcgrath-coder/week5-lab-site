@@ -134,8 +134,8 @@ export default function ChatPanel({
       </div>
 
       <p className="phi-reminder">
-        Reminder: never enter real patient information or PHI — use fictional cases only. Long
-        answers may be cut off — ask the model to continue if it stops mid-thought.
+        Reminder: never enter real patient information or PHI. Use fictional cases only. Long
+        answers may be cut off. Ask the model to continue if it stops mid-thought.
       </p>
     </div>
   );

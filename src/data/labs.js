@@ -1,19 +1,19 @@
 export const LABS = {
   intro: {
     title: "Working With AI — Prompting, Breaking, and Grounding",
-    courseLine: "MHI 289A • UC Davis School of Medicine • Summer 2026",
+    courseLine: "MHI 289A • UC Davis School of Medicine",
     howToUse: [
-      "Chat with each model directly in the panels below, then fill in the reflection fields as you go — don't wait until the end and try to reconstruct what happened from memory.",
+      "Chat with each model directly in the panels below, then fill in the reflection fields as you go. Don't wait until the end and try to reconstruct what happened from memory.",
       "You're graded on honesty and depth, not on getting clean, impressive-looking results. A record that documents a failure you almost missed is worth more than one that claims everything worked the first time. The failures are the assignment.",
     ],
     lanesNote:
-      "This class mixes clinical and operational health-informatics students. Most tasks let you pick a lane — clinical (patient-facing scenarios) or operational (policy, workflow, and administrative scenarios) — and you can switch lanes task by task. There's no requirement to stay in one lane all week.",
+      "This class mixes clinical and operational health-informatics students. Most tasks let you pick a lane, either clinical (patient-facing scenarios) or operational (policy, workflow, and administrative scenarios), and you can switch lanes task by task. There's no requirement to stay in one lane all week.",
     phiWarning:
       "Never put real patient information or PHI into any of these tools. Use the fictional cases provided or material you write yourself. If you wouldn't post it publicly, it doesn't go in the prompt box.",
   },
 
   lab1: {
-    goal: "Run the same underlying task two ways — a fast, throwaway prompt and a deliberately structured one — so you can see, in your own transcripts, what structure actually buys you.",
+    goal: "Run the same underlying task two ways: a fast, throwaway prompt, and a deliberately structured one. Then you can see in your own transcripts what structure actually buys you.",
     taskOptions: [
       {
         id: "t2dDischarge",
@@ -46,11 +46,11 @@ export const LABS = {
       { id: "refining", label: "Refine across turns" },
     ],
     reflections: {
-      runA: { prompt: "Look at what came back — you'll compare the two versions below." },
-      runB: { prompt: "Look at what came back — you'll compare the two versions below." },
+      runA: { prompt: "Look at what came back. You'll compare the two versions below." },
+      runB: { prompt: "Look at what came back. You'll compare the two versions below." },
       comparison: {
         prompt:
-          "What actually changed between the two? Be specific — not 'B was better'…",
+          "What actually changed between the two? Be specific, not just 'B was better.'",
         graded: true,
       },
     },
@@ -70,7 +70,7 @@ export const LABS = {
       id: "t2b",
       label: "Source to structured summary",
       description:
-        "Give the model a source document and ask it to produce a structured summary from it — nothing more, nothing less.",
+        "Give the model a source document and ask it to produce a structured summary from it, nothing more, nothing less.",
       reflection: "Did anything appear that wasn't in my source?",
     },
     t2c: {
@@ -102,7 +102,7 @@ export const LABS = {
       {
         id: "caught",
         label:
-          "How I caught it — what tipped me off, and how I confirmed it was wrong",
+          "How I caught it: what tipped me off, and how I confirmed it was wrong",
       },
     ],
     optionalPrompt: "A failure that almost got past you (optional)",
@@ -111,7 +111,7 @@ export const LABS = {
   },
 
   lab4: {
-    goal: "Run the same task two ways — once with no source material, once grounded in a source you provide — and compare what grounding fixes and what it doesn't.",
+    goal: "Run the same task two ways: once with no source material, once grounded in a source you provide. Then compare what grounding fixes and what it doesn't.",
     fields: {
       taskAndSource: {
         label: "The task, and the source text I used for the grounded run",
