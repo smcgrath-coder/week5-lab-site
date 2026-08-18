@@ -577,3 +577,28 @@
     border-color: rgba(74, 222, 128, 0.35);
   }
 }
+
+/* ---- Instructor ---- */
+
+.instructor-balance {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  max-width: 260px;
+}
+
+.instructor-balance-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.instructor-balance-row:last-child {
+  margin-bottom: 0;
+}
+
+.instructor-balance-label {
+  color: var(--text);
+}

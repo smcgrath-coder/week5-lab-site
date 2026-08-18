@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Finish from "./components/Finish.jsx";
 import Hub from "./components/Hub.jsx";
+import Instructor from "./components/Instructor.jsx";
 import Lab1 from "./components/Lab1.jsx";
 import Lab2 from "./components/Lab2.jsx";
 import Lab3 from "./components/Lab3.jsx";
@@ -57,7 +58,7 @@ function App() {
         {route === "hub" && <Hub labState={labState} onNavigate={setRoute} />}
         {LabScreen && <LabScreen labState={labState} onNavigate={setRoute} />}
         {route === "finish" && <Finish labState={labState} onNavigate={setRoute} />}
-        {route === "instructor" && <p>Instructor page coming soon.</p>}
+        {route === "instructor" && <Instructor />}
       </Layout>
     </PasscodeContext.Provider>
   );
