@@ -46,8 +46,8 @@ export const LABS = {
       { id: "refining", label: "Refine across turns" },
     ],
     reflections: {
-      runA: { prompt: "What came back?" },
-      runB: { prompt: "What came back?" },
+      runA: { prompt: "Look at what came back — you'll compare the two versions below." },
+      runB: { prompt: "Look at what came back — you'll compare the two versions below." },
       comparison: {
         prompt:
           "What actually changed between the two? Be specific — not 'B was better'…",
@@ -105,7 +105,7 @@ export const LABS = {
           "How I caught it — what tipped me off, and how I confirmed it was wrong",
       },
     ],
-    optionalPrompt: "A failure that almost got past you",
+    optionalPrompt: "A failure that almost got past you (optional)",
     minAttempts: 2,
     minDistinctCategories: 2,
   },
