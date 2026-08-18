@@ -11,6 +11,7 @@ import {
   appendMessage,
   createInitialState,
   serialize,
+  setStudent,
   startConversation,
   updateLab3Attempt,
 } from "../state/labState";
@@ -81,6 +82,19 @@ describe("Lab2 — case buttons filter by lane", () => {
     await user.click(screen.getByRole("button", { name: "operational" }));
     expect(screen.getByRole("button", { name: /insert o2/i })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /insert c2/i })).not.toBeInTheDocument();
+  });
+
+  it("defaults to the student's chosen lane before any toggle is explicitly clicked", () => {
+    let state = createInitialState();
+    state = setStudent(state, { name: "Jordan", lane: "operational", acknowledgedPHI: true });
+    localStorage.setItem(STATE_KEY, serialize(state));
+
+    render(<Harness Screen={Lab2} />);
+
+    // no click yet — should already show operational's case, not clinical's
+    expect(screen.getByRole("button", { name: /insert o2/i })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /insert c2/i })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "operational" })).toHaveAttribute("aria-pressed", "true");
   });
 });
 

@@ -28,10 +28,19 @@ const TABS = [
 
 export default function Lab2({ labState, onNavigate }) {
   const lab2 = labState.state.labs.lab2;
+  const studentLane = labState.state.student.lane;
   const [activeTab, setActiveTab] = useState("t2a");
 
   function updateTask(taskId, patch) {
     labState.updateLab("lab2", { [taskId]: { ...lab2[taskId], ...patch } });
+  }
+
+  // A task's own lane is a starting point, not a commitment — until the
+  // student explicitly picks one for this task, default to the lane they
+  // chose on landing (per the landing page's own promise: "just a starting
+  // point"), rather than showing both lanes' cases until clicked.
+  function effectiveLane(taskLane) {
+    return taskLane ?? studentLane;
   }
 
   function chatHandlersFor(taskId) {
@@ -74,8 +83,8 @@ export default function Lab2({ labState, onNavigate }) {
               <button
                 key={lane}
                 type="button"
-                aria-pressed={lab2.t2a.lane === lane}
-                className={`lane-toggle-button${lab2.t2a.lane === lane ? " selected" : ""}`}
+                aria-pressed={effectiveLane(lab2.t2a.lane) === lane}
+                className={`lane-toggle-button${effectiveLane(lab2.t2a.lane) === lane ? " selected" : ""}`}
                 onClick={() => updateTask("t2a", { lane })}
               >
                 {lane}
@@ -84,7 +93,7 @@ export default function Lab2({ labState, onNavigate }) {
           </div>
           <ChatPanel
             conversation={lab2.t2a.chat}
-            caseButtons={casesFor("task2a", lab2.t2a.lane)}
+            caseButtons={casesFor("task2a", effectiveLane(lab2.t2a.lane))}
             label="2A — Reading level"
             {...chatHandlersFor("t2a")}
           />
@@ -105,8 +114,8 @@ export default function Lab2({ labState, onNavigate }) {
               <button
                 key={lane}
                 type="button"
-                aria-pressed={lab2.t2b.lane === lane}
-                className={`lane-toggle-button${lab2.t2b.lane === lane ? " selected" : ""}`}
+                aria-pressed={effectiveLane(lab2.t2b.lane) === lane}
+                className={`lane-toggle-button${effectiveLane(lab2.t2b.lane) === lane ? " selected" : ""}`}
                 onClick={() => updateTask("t2b", { lane })}
               >
                 {lane}
@@ -115,7 +124,7 @@ export default function Lab2({ labState, onNavigate }) {
           </div>
           <ChatPanel
             conversation={lab2.t2b.chat}
-            caseButtons={casesFor("task2b", lab2.t2b.lane)}
+            caseButtons={casesFor("task2b", effectiveLane(lab2.t2b.lane))}
             label="2B — Source to structured summary"
             {...chatHandlersFor("t2b")}
           />
