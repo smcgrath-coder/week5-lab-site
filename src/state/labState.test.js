@@ -7,6 +7,7 @@ import {
   exportBackup,
   importBackup,
   serialize,
+  setConversationMessages,
   setStudent,
   startConversation,
   updateLab,
@@ -177,6 +178,23 @@ describe("appendMessage", () => {
 
     expect(next.labs.lab3.attempts[0].chat.messages).toHaveLength(1);
     expect(state.labs.lab3.attempts[0].chat.messages).toHaveLength(0);
+  });
+});
+
+describe("setConversationMessages", () => {
+  it("replaces the full messages array at the given path immutably", () => {
+    let state = createInitialState();
+    state = startConversation(state, ["lab1", "runA"], "claude-haiku");
+    state = appendMessage(state, ["lab1", "runA"], { role: "user", content: "hi" });
+
+    const streamedMessages = [
+      { role: "user", content: "hi", at: "2026-01-01T00:00:00.000Z" },
+      { role: "assistant", content: "partial repl", at: "2026-01-01T00:00:01.000Z" },
+    ];
+    const next = setConversationMessages(state, ["lab1", "runA"], streamedMessages);
+
+    expect(next.labs.lab1.runA.messages).toEqual(streamedMessages);
+    expect(state.labs.lab1.runA.messages).toHaveLength(1);
   });
 });
 

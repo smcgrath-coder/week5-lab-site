@@ -106,6 +106,10 @@ export function appendMessage(state, path, message) {
   return setIn(state, ["labs", ...path, "messages"], nextMessages);
 }
 
+export function setConversationMessages(state, path, messages) {
+  return setIn(state, ["labs", ...path, "messages"], messages);
+}
+
 export function exportBackup(state) {
   const date = new Date().toISOString().slice(0, 10);
   return {
