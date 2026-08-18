@@ -17,7 +17,19 @@ export default async function handler(request) {
   }
 
   const env = process.env;
-  console.error("DIAG OPENROUTER_API_KEY present:", Boolean(env.OPENROUTER_API_KEY), "length:", env.OPENROUTER_API_KEY?.length);
+  const k = env.OPENROUTER_API_KEY || "";
+  console.error(
+    "DIAG key checks: len=",
+    k.length,
+    "trimmedLen=",
+    k.trim().length,
+    "startsWithQuote=",
+    k.startsWith('"'),
+    "endsWithQuote=",
+    k.endsWith('"'),
+    "hasNewline=",
+    /[\r\n]/.test(k)
+  );
 
   let body;
   try {
