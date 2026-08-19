@@ -160,6 +160,10 @@ export default function Lab3({ labState, onNavigate }) {
         onChange={(value) => labState.updateLab("lab3", { almostGotPastMe: value })}
       />
 
+      <button type="button" className="lab-next-button" onClick={() => onNavigate("lab4")}>
+        Continue to Lab 4 →
+      </button>
+
       <button type="button" className="back-link" onClick={() => onNavigate("hub")}>
         ← Back to hub
       </button>

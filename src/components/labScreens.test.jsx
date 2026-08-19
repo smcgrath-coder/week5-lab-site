@@ -121,6 +121,42 @@ describe("Lab2 — next task navigation", () => {
   });
 });
 
+describe("Lab1 — continue to Lab 2", () => {
+  it("offers to continue to Lab 2 at the end", async () => {
+    const user = userEvent.setup();
+    const onNavigate = vi.fn();
+    render(<Harness Screen={Lab1} onNavigate={onNavigate} />);
+
+    await user.click(screen.getByRole("button", { name: /continue to lab 2/i }));
+
+    expect(onNavigate).toHaveBeenCalledWith("lab2");
+  });
+});
+
+describe("Lab3 — continue to Lab 4", () => {
+  it("offers to continue to Lab 4 at the end", async () => {
+    const user = userEvent.setup();
+    const onNavigate = vi.fn();
+    render(<Harness Screen={Lab3} onNavigate={onNavigate} />);
+
+    await user.click(screen.getByRole("button", { name: /continue to lab 4/i }));
+
+    expect(onNavigate).toHaveBeenCalledWith("lab4");
+  });
+});
+
+describe("Lab4 — continue to Wrap-Up", () => {
+  it("offers to continue to Wrap-Up at the end", async () => {
+    const user = userEvent.setup();
+    const onNavigate = vi.fn();
+    render(<Harness Screen={Lab4} onNavigate={onNavigate} />);
+
+    await user.click(screen.getByRole("button", { name: /continue to wrap-up/i }));
+
+    expect(onNavigate).toHaveBeenCalledWith("wrapUp");
+  });
+});
+
 describe("Lab2 — 2B and 2C copy clarifications", () => {
   it("does not describe the pasted text as a 'source document' to upload", () => {
     render(<Harness Screen={Lab2} />);

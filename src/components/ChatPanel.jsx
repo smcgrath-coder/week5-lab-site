@@ -129,7 +129,11 @@ export default function ChatPanel({
               onChange={(e) => setDraft(e.target.value)}
               onKeyDown={handleKeyDown}
               rows={4}
-              placeholder="Type your message…"
+              placeholder={
+                caseButtons.length > 0
+                  ? "Type your instructions here first, then use an Insert button below to add the source text…"
+                  : "Type your message…"
+              }
             />
           </label>
 

@@ -121,6 +121,10 @@ export default function Lab1({ labState, onNavigate }) {
         graded
       />
 
+      <button type="button" className="lab-next-button" onClick={() => onNavigate("lab2")}>
+        Continue to Lab 2 →
+      </button>
+
       <button type="button" className="back-link" onClick={() => onNavigate("hub")}>
         ← Back to hub
       </button>

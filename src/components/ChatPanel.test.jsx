@@ -164,6 +164,22 @@ describe("ChatPanel — message placeholder", () => {
   });
 });
 
+describe("ChatPanel — placeholder reminds students to write their own prompt before inserting a case", () => {
+  it("shows a reminder to type instructions first when case-insert buttons are present", () => {
+    render(
+      <ChatPanel conversation={startedConversation()} onUpdate={() => {}} caseButtons={["c2"]} label="Test panel" />
+    );
+
+    expect(screen.getByRole("textbox", { name: /message/i }).placeholder).toMatch(/instructions/i);
+  });
+
+  it("keeps the generic placeholder when there are no case-insert buttons", () => {
+    render(<ChatPanel conversation={startedConversation()} onUpdate={() => {}} caseButtons={[]} label="Test panel" />);
+
+    expect(screen.getByRole("textbox", { name: /message/i }).placeholder).not.toMatch(/instructions/i);
+  });
+});
+
 describe("ChatPanel — try a different model", () => {
   it("shows a 'Try a different model' button once the model is locked, and clears the transcript without a confirm dialog when clicked", async () => {
     const user = userEvent.setup();

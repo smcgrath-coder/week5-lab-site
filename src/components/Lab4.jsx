@@ -117,6 +117,10 @@ export default function Lab4({ labState, onNavigate }) {
         onChange={(value) => labState.updateLab("lab4", { reflection: value })}
       />
 
+      <button type="button" className="lab-next-button" onClick={() => onNavigate("wrapUp")}>
+        Continue to Wrap-Up →
+      </button>
+
       <button type="button" className="back-link" onClick={() => onNavigate("hub")}>
         ← Back to hub
       </button>

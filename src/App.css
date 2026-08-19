@@ -573,7 +573,7 @@
   font-weight: 600;
 }
 
-.lab2-next-button {
+.lab-next-button {
   background: var(--accent);
   color: #fff;
   border: none;
