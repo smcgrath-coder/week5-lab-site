@@ -96,6 +96,8 @@ export const LABS = {
 
   lab3: {
     goal: "Lab 3 is the core of the week: make each model fail on purpose, then document exactly how you caught it.",
+    difficultyNote:
+      "A heads-up: today's models are considerably harder to jailbreak or trick into hallucinating than the very first ones were. You may not always succeed, and that's fine. The value here is in the attempt itself. Trying to break a model, and thinking through how you'd catch it if you did, is what builds the instinct this lab is training. An honest \"I tried hard and couldn't provoke it\" counts as a real result, not a failure.",
     howTo: [
       "Pick a failure category below for Attempt 1, then try to provoke that kind of failure in the chat underneath it. Adversarial prompting is fair game — you're allowed to push, rephrase, and try again within that one chat.",
       "Once you have an exchange that shows the failure (or clearly shows you couldn't provoke it after real effort), fill in the three documentation fields for that attempt.",

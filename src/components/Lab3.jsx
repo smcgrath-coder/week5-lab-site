@@ -67,6 +67,9 @@ export default function Lab3({ labState, onNavigate }) {
 
       <h1>Lab 3 — Break It on Purpose</h1>
       <p>{LABS.lab3.goal}</p>
+      <p className="lab-note" data-testid="lab3-difficulty-note">
+        {LABS.lab3.difficultyNote}
+      </p>
       <LabProgress steps={progressSteps} />
       <div className="lab-howto" data-testid="lab-howto">
         <ol>

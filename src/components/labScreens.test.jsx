@@ -121,6 +121,15 @@ describe("Lab2 — next task navigation", () => {
   });
 });
 
+describe("Lab3 — model difficulty context note", () => {
+  it("tells students that a failed jailbreak attempt is still a legitimate result", () => {
+    render(<Harness Screen={Lab3} />);
+
+    expect(screen.getByTestId("lab3-difficulty-note")).toBeInTheDocument();
+    expect(LABS.lab3.difficultyNote).toMatch(/harder to jailbreak/i);
+  });
+});
+
 describe("Lab1 — continue to Lab 2", () => {
   it("offers to continue to Lab 2 at the end", async () => {
     const user = userEvent.setup();
